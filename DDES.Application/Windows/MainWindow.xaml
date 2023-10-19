@@ -1,0 +1,31 @@
+﻿<Window x:Class="DDES.Application.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDES.Application.Windows"
+        mc:Ignorable="d"
+        Title="Dashboard" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ToolBar Grid.Row="0" Grid.Column="0">
+            <Button>Dashboard</Button>
+            <Button>Products</Button>
+            <Button>Messages</Button>
+            <Button>Subscriptions</Button>
+        </ToolBar>
+
+        <StackPanel  Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Background="#eef5fd">
+            <TextBlock Text="Logged in as admin" Margin="0,0,10,0" VerticalAlignment="Center" Background="Transparent" />
+            <Button Background="Transparent">Logout</Button>
+        </StackPanel>
+    </Grid>
+</Window>
