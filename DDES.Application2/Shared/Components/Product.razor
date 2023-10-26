@@ -1,15 +1,30 @@
 ﻿<div class="product-container">
     <div class="product-image-container">
-        <img alt="Sample product image." />
+        <img src="@Image.Src" alt="@Image.Alt"/>
     </div>
     <div class="product-details">
-        <p>Product Name</p>
-        <p>Product Price</p>
-        <p>Seller Name</p>
-        <p>Description</p>
+        <p>@Name</p>
+        <p>@Price</p>
+        <p>@SellerName</p>
+        <p>@Description</p>
     </div>
 </div>
 
 @code {
-    
+
+    [Parameter]
+    public string Name { get; set; } = "Product Name";
+
+    [Parameter]
+    public float Price { get; set; }
+
+    [Parameter]
+    public string SellerName { get; set; } = "Seller Name";
+
+    [Parameter]
+    public string Description { get; set; } = "Description";
+
+    [Parameter]
+    public (string Src, string Alt) Image { get; set; } = (string.Empty, "Sample product image.");
+
 }
