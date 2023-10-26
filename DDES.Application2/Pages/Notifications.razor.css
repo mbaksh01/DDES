@@ -1,0 +1,5 @@
+﻿.notification-panel-container {
+  display: flex;
+  gap: 5rem;
+  padding: 1.5rem 5rem;
+}

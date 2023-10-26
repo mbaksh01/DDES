@@ -1,0 +1,23 @@
+﻿<div class="notification-panel">
+    <div class="notification-panel-header">
+        <h3>@Title</h3>
+        <button @onclick="ClearAllClicked">Clear All</button>
+    </div>
+    <hr/>
+    <div class="notification-panel-notifications">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = "Notifications";
+
+    [Parameter]
+    public EventCallback ClearAllClicked { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

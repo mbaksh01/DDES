@@ -1,0 +1,23 @@
+﻿.notification {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.notification-details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
+
+.notification-details > p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.notification-details > span {
+  margin: 0 0.5rem;
+  height: 2rem;
+}

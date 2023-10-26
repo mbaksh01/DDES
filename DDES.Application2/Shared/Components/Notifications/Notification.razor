@@ -1,0 +1,28 @@
+﻿<div class="notification">
+    <div class="notification-details">
+        <p>@Title</p>
+        <span class="pi-circle"></span>
+        <p>@(Time.Minutes)m ago</p>
+        <span class="pi-circle"></span>
+        <p>@State</p>
+    </div>
+    <div class="notification-description">
+        <p>@ChildContent</p>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = "Notification Title";
+
+    [Parameter]
+    public TimeSpan Time { get; set; } = TimeSpan.FromMinutes(1);
+
+    [Parameter]
+    public NotificationState State { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = builder => { builder.AddMarkupContent(1, "Notification Description"); };
+
+}

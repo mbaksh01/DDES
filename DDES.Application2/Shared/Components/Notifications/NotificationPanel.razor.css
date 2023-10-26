@@ -1,0 +1,33 @@
+﻿hr {
+  margin: 0 1rem;
+}
+
+.notification-panel {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.notification-panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0.75rem;
+}
+
+.notification-panel-header > button {
+  background-color: white;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.notification-panel-notifications {
+  width: 100%;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.notification-panel-notifications ::deep .notification:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
