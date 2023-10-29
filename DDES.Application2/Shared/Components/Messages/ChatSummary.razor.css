@@ -1,0 +1,40 @@
+﻿.chat-summary {
+  display: flex;
+  gap: 0.5rem;
+  border: 1px solid #797979;
+  padding: 0.5rem;
+}
+
+.chat-summary-details {
+  width: 100%;
+}
+
+.seller-image-container {
+  width: 20%;
+  height: 100%;
+  aspect-ratio: 1;
+  border: 1px solid #797979;
+}
+
+.chat-summary-details-container {
+  width: 100%;
+  margin: auto 0;
+}
+
+.chat-summary-details > p {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.chat-summary-last-sent-message {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-summary-last-sent-message > p {
+  margin: 0;
+}
+
+.chat-summary-last-sent-message > span {
+  transform: translateY(-0.175rem);
+}

@@ -1,0 +1,15 @@
+﻿<div class="chat-bubble @GetSideClass()">
+    <p>Hello World</p>
+</div>
+
+@code {
+
+    [Parameter]
+    public ChatBubbleSide Side { get; set; }
+
+    private string GetSideClass()
+    {
+        return Side == ChatBubbleSide.Left ? "left" : "right";
+    }
+
+}

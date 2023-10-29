@@ -1,0 +1,17 @@
+﻿.chat-bubble {
+  padding: 0.5rem;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.chat-bubble > p {
+  margin: 0;
+}
+
+.left {
+  align-self: start;
+}
+
+.right {
+  align-self: end;
+}
