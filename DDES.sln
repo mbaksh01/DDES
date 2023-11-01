@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DESS.Client", "DESS.Client\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDES.Application", "DDES.Application\DDES.Application.csproj", "{79BE2C56-1057-41FD-95B8-10D250778EB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDES.Data", "DDES.Data\DDES.Data.csproj", "{40A7F8A0-9602-4B00-BBD2-EE44B9BFA69C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDES.Common", "DDES.Common\DDES.Common.csproj", "{40A7F8A0-9602-4B00-BBD2-EE44B9BFA69C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C8F99A73-3DCC-4614-A4B7-813811119B64}"
 	ProjectSection(SolutionItems) = preProject

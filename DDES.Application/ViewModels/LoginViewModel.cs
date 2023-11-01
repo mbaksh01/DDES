@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DDES.Application.Services.Abstractions;
 using DDES.Application.Windows;
-using DDES.Data.Models;
+using DDES.Common.Models;
 
 namespace DDES.Application.ViewModels;
 

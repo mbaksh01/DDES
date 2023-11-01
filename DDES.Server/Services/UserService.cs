@@ -1,6 +1,6 @@
-﻿using DDES.Data.Models;
+﻿using System.Text.Json;
+using DDES.Common.Models;
 using DDES.Server.Services.Abstractions;
-using System.Text.Json;
 
 namespace DDES.Server.Services;
 
@@ -24,12 +24,14 @@ internal class UserService : IUserService
 
         string users = sr.ReadToEnd();
 
-        _users = JsonSerializer.Deserialize<List<User>>(users) ?? new List<User>();
+        _users = JsonSerializer.Deserialize<List<User>>(users) ??
+                 new List<User>();
     }
 
     private async Task SaveUsers()
     {
-        await using StreamWriter sw = new("Data/credentials.json", append: false);
+        await using StreamWriter sw = new("Data/credentials.json",
+            append: false);
 
         sw.WriteLine(JsonSerializer.Serialize(_users));
     }
@@ -43,7 +45,7 @@ internal class UserService : IUserService
         return user is null
             ? null
             : user.Password != password
-            ? null
-            : user;
+                ? null
+                : user;
     }
 }

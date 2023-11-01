@@ -11,6 +11,7 @@
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
+      <Nullable>enable</Nullable>
 
         <!-- Display name -->
         <ApplicationTitle>DDES.Application2</ApplicationTitle>
@@ -51,6 +52,11 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+      <PackageReference Include="NetMQ" Version="4.0.1.13"/>
+    </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDES.Common\DDES.Common.csproj"/>
     </ItemGroup>
 
 </Project>

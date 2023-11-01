@@ -1,11 +1,11 @@
-﻿using DDES.Application.Services.Abstractions;
-using DDES.Data.Enums;
-using DDES.Data.Models;
-using NetMQ;
-using NetMQ.Sockets;
-using System.Buffers;
+﻿using System.Buffers;
 using System.Text;
 using System.Text.Json;
+using DDES.Application.Services.Abstractions;
+using DDES.Common.Enums;
+using DDES.Common.Models;
+using NetMQ;
+using NetMQ.Sockets;
 
 namespace DDES.Application.Services;
 
@@ -17,7 +17,9 @@ internal sealed class MessagingService : IMessagingService
 
         string response = SendMessage(jsonUser);
 
-        return string.IsNullOrEmpty(response) ? null : JsonSerializer.Deserialize<User?>(response);
+        return string.IsNullOrEmpty(response)
+            ? null
+            : JsonSerializer.Deserialize<User?>(response);
     }
 
     public string SendMessage(string data)
@@ -26,7 +28,9 @@ internal sealed class MessagingService : IMessagingService
 
         byte[] buffer = ArrayPool<byte>.Shared.Rent(data.Length + 3);
 
-        int writtenBytes = Encoding.UTF8.GetBytes($"{(int)MessageType.Authenticate}-{data}".AsSpan(), buffer);
+        int writtenBytes =
+            Encoding.UTF8.GetBytes(
+                $"{(int)MessageType.Authenticate}-{data}".AsSpan(), buffer);
 
         requester.SendFrame(buffer[..writtenBytes]);
 

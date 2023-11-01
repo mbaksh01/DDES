@@ -1,4 +1,4 @@
-﻿using DDES.Data.Models;
+﻿using DDES.Common.Models;
 using DDES.Server.Services.Abstractions;
 
 namespace DDES.Server.Services;

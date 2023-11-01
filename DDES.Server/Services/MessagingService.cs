@@ -1,29 +1,27 @@
-﻿using DDES.Data.Enums;
-using DDES.Data.Models;
+﻿using System.Text.Json;
+using DDES.Common.Enums;
+using DDES.Common.Helpers;
+using DDES.Common.Models;
 using DDES.Server.Services.Abstractions;
 using NetMQ;
 using NetMQ.Sockets;
-using System.Text.Json;
 
 namespace DDES.Server.Services;
 
-internal class MessagingService : IDisposable
+internal class MessagingService
 {
     private readonly ILogger<MessagingService> _logger;
     private readonly IUserService _userService;
     private readonly IClientService _clientService;
-    private readonly IEncryptionService _encryptionService;
 
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
-        IClientService clientService,
-        IEncryptionService encryptionService)
+        IClientService clientService)
     {
         _logger = logger;
         _userService = userService;
         _clientService = clientService;
-        _encryptionService = encryptionService;
     }
 
     public void Listen(int port = 5555)
@@ -31,7 +29,7 @@ internal class MessagingService : IDisposable
         using ResponseSocket responder = new();
         responder.Bind($"tcp://*:{port}");
 
-        _logger.LogInformation($"Service listening on port: {port}.");
+        _logger.LogInformation("Service listening on port: {port}.", port);
 
         while (true)
         {
@@ -39,36 +37,38 @@ internal class MessagingService : IDisposable
 
             _logger.LogInformation("Received Frame: {message}", message);
 
-            byte[] response = ProcessMessage(message);
+            string response = ProcessMessage(message);
 
-            _logger.LogInformation("Sending Frame: '{frame}'", string.Join(" ", response.Select(b => $"0x{b:X2}")));
+            _logger.LogInformation("Sending Frame: '{frame}'", response);
 
             responder.SendFrame(response);
         }
     }
 
-    private byte[] ProcessMessage(string message)
+    private string ProcessMessage(string message)
     {
-        Message? msg = _encryptionService.Decrypt<Message>(message);
+        RequestMessage<string>? msg =
+            EncryptionHelper.Decrypt<RequestMessage<string>>(message);
 
         if (msg is null)
         {
-            return Array.Empty<byte>();
+            return string.Empty;
         }
 
-        Message? response = msg.MessageType switch
-        {
-            MessageType.ClientConnected => ClientConnected(msg.Data.AsSpan()),
-            MessageType.Authenticate => Authenticate(msg.Data.AsSpan()),
-            _ or MessageType.Unknown => Message.CreateResponseMessage(null),
-        };
+        _logger.LogInformation("{MessageType}, {Data}", msg.MessageType,
+            msg.Data);
 
-        return response?.Data is null
-            ? Array.Empty<byte>()
-            : _encryptionService.Encrypt(response, msg.ClientId);
+        if (msg.MessageType is MessageType.Authenticate)
+        {
+            ResponseMessage<User>? response = Authenticate(msg.Data.AsSpan());
+
+            return EncryptionHelper.Encrypt(response);
+        }
+
+        return EncryptionHelper.Encrypt(ResponseMessage<string>.Empty);
     }
 
-    private Message? Authenticate(ReadOnlySpan<char> message)
+    private ResponseMessage<User>? Authenticate(ReadOnlySpan<char> message)
     {
         User? user = JsonSerializer.Deserialize<User>(message);
 
@@ -79,27 +79,15 @@ internal class MessagingService : IDisposable
 
         user = _userService.Authenticate(user.Username, user.Password);
 
-        return Message.CreateResponseMessage(user is null ? null : JsonSerializer.Serialize(user));
-    }
-
-    private Message? ClientConnected(ReadOnlySpan<char> data)
-    {
-        byte[]? clientPublicKey = JsonSerializer.Deserialize<byte[]>(data);
-
-        if (clientPublicKey is null)
+        if (user is null)
         {
-            return null;
+            return ResponseMessage<User>.Empty;
         }
 
-        Client client = new(Guid.NewGuid(), clientPublicKey, string.Empty);
-
-        _clientService.AddClient(client);
-
-        return Message.CreateResponseMessage("");
-    }
-
-    public void Dispose()
-    {
-        _encryptionService.Dispose();
+        return new ResponseMessage<User>()
+        {
+            Successs = true,
+            Content = user,
+        };
     }
 }

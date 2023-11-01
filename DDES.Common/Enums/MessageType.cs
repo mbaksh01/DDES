@@ -1,4 +1,4 @@
-﻿namespace DDES.Data.Enums;
+﻿namespace DDES.Common.Enums;
 
 public enum MessageType
 {

@@ -16,7 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DDES.Data\DDES.Data.csproj" />
+    <ProjectReference Include="..\DDES.Common\DDES.Common.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\"/>
   </ItemGroup>
 
 </Project>

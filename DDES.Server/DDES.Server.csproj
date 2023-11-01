@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DDES.Data\DDES.Data.csproj" />
+    <ProjectReference Include="..\DDES.Common\DDES.Common.csproj"/>
   </ItemGroup>
 
 </Project>

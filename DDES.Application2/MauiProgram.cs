@@ -1,7 +1,9 @@
-﻿using DDES.Application2.Data;
+﻿using DDES.Application2.Services;
+using DDES.Application2.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace DDES.Application2;
+
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -17,11 +19,13 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services
+            .AddSingleton<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddSingleton<IMessagingService, MessagingService>();
 
         return builder.Build();
     }

@@ -1,0 +1,34 @@
+﻿@page "/login"
+@using DDES.Application2.Services.Abstractions
+
+<h3>Login</h3>
+
+<div>
+    <p>Username</p>
+    <input type="text"/>
+    <p>Password</p>
+    <input type="password"/>
+    <button @onclick="LoginClicked">Login</button>
+</div>
+
+@code {
+
+    private string username = string.Empty;
+
+    private string password = string.Empty;
+
+    [Inject]
+    private IAuthenticationService AuthenticationService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private void LoginClicked()
+    {
+        if (AuthenticationService.Authenticate(username, password, out _))
+        {
+            NavigationManager.NavigateTo("");
+        }
+    }
+
+}
