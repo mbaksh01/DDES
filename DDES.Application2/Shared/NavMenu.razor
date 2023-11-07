@@ -23,8 +23,9 @@
 
 @code {
 
-    [Inject] NavigationManager NavigationManager { get; set; }
-    
+    [Inject]
+    NavigationManager NavigationManager { get; set; } = default!;
+
     private string SelectedIfCurrentPage(string option)
     {
         if (option == "Dashboard"
@@ -32,9 +33,10 @@
         {
             return "selected";
         }
-        
+
         return NavigationManager.Uri.EndsWith(option, StringComparison.OrdinalIgnoreCase)
             ? "selected"
             : string.Empty;
     }
+
 }
