@@ -10,6 +10,8 @@ builder.ConfigureServices(services =>
     _ = services.AddSingleton<IClientService, ClientService>();
     _ = services.AddSingleton<IUserService, UserService>();
     _ = services.AddSingleton<MessagingService>();
+    _ = services.AddSingleton<PublishingService>();
+    _ = services.AddSingleton<UserMessagingService>();
 });
 
 IHost app = builder.Build();
@@ -17,6 +19,6 @@ IHost app = builder.Build();
 MessagingService messagingService =
     app.Services.GetRequiredService<MessagingService>();
 
-messagingService.Listen();
-
 app.Start();
+
+messagingService.Listen();
