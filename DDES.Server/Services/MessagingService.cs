@@ -24,16 +24,17 @@ internal class MessagingService
         _clientService = clientService;
     }
 
-    public void Listen(int port = 5555)
+    public async Task ListenAsync(int port = 5555)
     {
-        using ResponseSocket responder = new();
-        responder.Bind($"tcp://*:{port}");
-
-        _logger.LogInformation("Service listening on port: {port}.", port);
+        using ResponseSocket receiver = new();
+        receiver.Bind($"tcp://*:{port}");
 
         while (true)
         {
-            string message = responder.ReceiveFrameString();
+            _logger.LogInformation("Service listening on port: {port}.",
+                port);
+            string message = receiver.ReceiveFrameString();
+            receiver.SendFrameEmpty();
 
             _logger.LogInformation("Received Frame: {message}", message);
 
@@ -41,7 +42,10 @@ internal class MessagingService
 
             _logger.LogInformation("Sending Frame: '{frame}'", response);
 
+            using RequestSocket responder = new();
+            responder.Connect($"tcp://127.0.0.1:{5556}");
             responder.SendFrame(response);
+            responder.ReceiveFrameString();
         }
     }
 

@@ -19,21 +19,32 @@ public class MessagingService : IMessagingService
             Data = JsonSerializer.Serialize(data),
         };
 
+        using RequestSocket requestSocket = new();
+        using ResponseSocket responseSocket = new();
+
+        requestSocket.Connect("tcp://127.0.0.1:5555");
+
         string encryptedMessage = EncryptionHelper.Encrypt(message);
 
-        using RequestSocket requestSocket = GetRequestSocket();
-
+        responseSocket.Bind($"tcp://*:{5556}");
+        //Send the request to the Server
         requestSocket.SendFrame(encryptedMessage);
+        _ = requestSocket.ReceiveFrameString();
 
-        Thread.Sleep(1000);
 
-        string responseString = requestSocket.ReceiveFrameString();
+        //Receive response from the server and provide server with confirmation receipt
+        string responseString = responseSocket.ReceiveFrameString();
+
+        responseSocket.SendFrame("Message received by client");
+
+        // responseSocket.Unbind($"tcp://*:{5556}");
 
         ResponseMessage<TResponse>? responseMessage =
             EncryptionHelper
                 .Decrypt<ResponseMessage<TResponse>>(responseString);
 
-        return responseMessage ?? ResponseMessage<TResponse>.Empty;
+        return responseMessage ??
+               ResponseMessage<TResponse>.Empty;
     }
 
     private static RequestSocket GetRequestSocket()
