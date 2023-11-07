@@ -5,6 +5,7 @@ using DDES.Common.Models;
 using DDES.Server.Services.Abstractions;
 using NetMQ;
 using NetMQ.Sockets;
+using Thread = DDES.Common.Models.Thread;
 
 namespace DDES.Server.Services;
 
@@ -12,19 +13,22 @@ internal class MessagingService
 {
     private readonly ILogger<MessagingService> _logger;
     private readonly IUserService _userService;
+    private readonly UserMessagingService _userMessaging;
     private readonly IClientService _clientService;
 
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
-        IClientService clientService)
+        IClientService clientService,
+        UserMessagingService userMessaging)
     {
         _logger = logger;
         _userService = userService;
         _clientService = clientService;
+        _userMessaging = userMessaging;
     }
 
-    public async Task ListenAsync(int port = 5555)
+    public void Listen(int port = 5555)
     {
         using ResponseSocket receiver = new();
         receiver.Bind($"tcp://*:{port}");
@@ -59,26 +63,31 @@ internal class MessagingService
             return string.Empty;
         }
 
-        _logger.LogInformation("{MessageType}, {Data}", msg.MessageType,
+        _logger.LogInformation(
+            "Processing message. Message Type: {messageType}, Content: {content}.",
+            msg.MessageType,
             msg.Data);
 
-        if (msg.MessageType is MessageType.Authenticate)
+        return msg.MessageType switch
         {
-            ResponseMessage<User>? response = Authenticate(msg.Data.AsSpan());
-
-            return EncryptionHelper.Encrypt(response);
-        }
-
-        return EncryptionHelper.Encrypt(ResponseMessage<string>.Empty);
+            MessageType.Authenticate => EncryptionHelper.Encrypt(
+                Authenticate(msg.ClientId, msg.Data)),
+            MessageType.GetThreads => EncryptionHelper.Encrypt(
+                GetThreads(msg.ClientId)),
+            MessageType.ClientConnected => EncryptionHelper.Encrypt(
+                ClientConnected(msg.Data)),
+            _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
+        };
     }
 
-    private ResponseMessage<User>? Authenticate(ReadOnlySpan<char> message)
+    private ResponseMessage<User> Authenticate(Guid clientId,
+        ReadOnlySpan<char> message)
     {
         User? user = JsonSerializer.Deserialize<User>(message);
 
         if (user is null)
         {
-            return null;
+            return ResponseMessage<User>.Empty;
         }
 
         user = _userService.Authenticate(user.Username, user.Password);
@@ -88,10 +97,68 @@ internal class MessagingService
             return ResponseMessage<User>.Empty;
         }
 
-        return new ResponseMessage<User>()
+        _clientService.AppendUsername(clientId, user.Username);
+
+        _logger.LogInformation("Successfully authenticated user.");
+
+        return new ResponseMessage<User>
         {
             Successs = true,
             Content = user,
+        };
+    }
+
+    private ResponseMessage<Threads> GetThreads(Guid clientId)
+    {
+        string? username = _clientService.GetUsername(clientId);
+
+        if (username is null)
+        {
+            return ResponseMessage<Threads>.Empty;
+        }
+
+        IEnumerable<Thread> threads = _userMessaging.GetThreads(username);
+
+        _logger.LogInformation("Successfully got threads.");
+
+        return new ResponseMessage<Threads>
+        {
+            Successs = true,
+            Content = new Threads
+            {
+                ThreadList = threads.ToList(),
+            },
+        };
+    }
+
+    private ResponseMessage<ClientConnectedResponse> ClientConnected(
+        ReadOnlySpan<char> clientConnectedJson)
+    {
+        ClientConnectedRequest? clientConnected =
+            JsonSerializer.Deserialize<ClientConnectedRequest>(
+                clientConnectedJson);
+
+        if (clientConnected is null)
+        {
+            return ResponseMessage<ClientConnectedResponse>.Empty;
+        }
+
+        Client client = new(
+            Guid.NewGuid(),
+            clientConnected.Username,
+            clientConnected.Port);
+
+        _clientService.AddClient(client);
+
+        _logger.LogInformation("Successfully registered client.");
+
+        return new ResponseMessage<ClientConnectedResponse>
+        {
+            Successs = true,
+            Content = new ClientConnectedResponse
+            {
+                ClientId = client.Id,
+            }
         };
     }
 }

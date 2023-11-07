@@ -6,5 +6,7 @@ internal interface IClientService
 {
     void AddClient(Client client);
 
-    byte[] GetPublicKey(Guid id);
+    string? GetUsername(Guid clientId);
+
+    void AppendUsername(Guid clientId, string username);
 }
