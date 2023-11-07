@@ -1,0 +1,56 @@
+﻿.account-panel {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.account-panel > hr {
+  background-color: #333333;
+  margin: 0;
+}
+
+.account-summary {
+  padding: 1rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 33%;
+}
+
+.account-summary > img {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1rem;
+  aspect-ratio: 1;
+  padding: 0 9.5rem;
+}
+
+.account-summary > h3 {
+  margin: 0;
+}
+
+.quick-actions {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quick-actions > h3 {
+  margin: 0.5rem auto 1rem auto;
+}
+
+.quick-actions > button {
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.quick-actions > button:not(:last-child) {
+  margin-bottom: 1rem;
+}
