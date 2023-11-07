@@ -26,7 +26,6 @@
   width: 70%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 
 .chat > h4 {
@@ -52,12 +51,33 @@
 .chat-history {
   height: 100%;
   margin-bottom: 1rem;
+  overflow: auto;
+  max-height: calc(100vh - 21rem);
+}
+
+.chat-history-flex {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  overflow: auto;
 }
 
-.chat-history ::deep .chat-bubble:not(:last-child) {
+.chat-history-flex ::deep .chat-bubble:not(:last-child) {
   margin-bottom: 1rem;
+}
+
+.chat-input {
+  display: flex;
+}
+
+.chat-input > button {
+  justify-self: flex-end;
+  background-color: white;
+  border: 1px solid #797979;
+  border-radius: 5px;
+  margin-left: 1rem;
+}
+
+.chat-input > input {
+  width: 100%;
+  outline: none;
 }

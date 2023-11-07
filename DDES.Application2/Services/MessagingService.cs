@@ -10,11 +10,19 @@ namespace DDES.Application2.Services;
 
 public class MessagingService : IMessagingService
 {
-    public ResponseMessage<TResponse> Send<TModel, TResponse>(Guid clientId,
+    private readonly IClientService _clientService;
+
+    public MessagingService(IClientService clientService)
+    {
+        _clientService = clientService;
+    }
+
+    public ResponseMessage<TResponse> Send<TModel, TResponse>(
         MessageType messageType, TModel data)
     {
         RequestMessage<string> message = new()
         {
+            ClientId = _clientService.ClientId,
             MessageType = messageType,
             Data = JsonSerializer.Serialize(data),
         };

@@ -9,6 +9,8 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IMessagingService _messagingService;
 
+    public User? User { get; private set; }
+
     public AuthenticationService(IMessagingService messagingService)
     {
         _messagingService = messagingService;
@@ -17,7 +19,7 @@ public class AuthenticationService : IAuthenticationService
     public bool Authenticate(string username, string password,
         [MaybeNullWhen(false)] out User user)
     {
-        var response = _messagingService.Send<User, User>(Guid.NewGuid(),
+        var response = _messagingService.Send<User, User>(
             MessageType.Authenticate, new User
             {
                 Username = username,
@@ -25,7 +27,7 @@ public class AuthenticationService : IAuthenticationService
                 Roles = new List<string>(),
             });
 
-        user = response.Content;
+        User = user = response.Content;
         return response.Successs;
     }
 }

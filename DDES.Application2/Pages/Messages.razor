@@ -1,52 +1,39 @@
 ﻿@page "/messages"
+@using DDES.Common.Models
+@using System.Globalization
 
 <div class="messages-container">
     <div class="chats-container">
         <h3>Messages</h3>
         <div class="chats">
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
-            <ChatSummary></ChatSummary>
+            @foreach (var thread in _threads)
+            {
+                <ChatSummary></ChatSummary>
+            }
         </div>
     </div>
     <div class="chat">
-        <h4>Seller Name</h4>
-        <hr/>
-        <div class="chat-messages">
-            <div class="chat-history">
-                <ChatBubble Side="ChatBubbleSide.Left"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
-                <ChatBubble Side="ChatBubbleSide.Right"></ChatBubble>
+        @if (_currentThread is not null)
+        {
+            <h4>@_currentThread.SupplierUsername</h4>
+            <hr/>
+            <div class="chat-messages">
+                <div class="chat-history">
+                    <div class="chat-history-flex">
+                        @foreach (ThreadMessage message in _currentThread.Messages.OrderBy(m => m.DateTimeSent))
+                        {
+                            <ChatBubble
+                                Side="@(message.From.Equals(_currentRole, StringComparison.OrdinalIgnoreCase) ? ChatBubbleSide.Right : ChatBubbleSide.Left)"
+                                Chat="@message.MessageText"
+                                Title="@message.DateTimeSent.ToString(CultureInfo.InvariantCulture)"/>
+                        }
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" @bind-value="_message" @onkeyup="SendOnEnter"/>
+                    <button @onclick="SendMessage">Send</button>
+                </div>
             </div>
-            <input type="text"/>
-        </div>
+        }
     </div>
 </div>

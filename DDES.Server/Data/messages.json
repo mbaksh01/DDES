@@ -1,0 +1,22 @@
+﻿{
+  "threads": [
+    {
+      "supplierUsername": "customer",
+      "customerUsername": "customer",
+      "messages": [
+        {
+          "message": "Hi, I was wondering if I brought 200 units will I be able to get a discount?",
+          "from": "customer",
+          "to": "supplier",
+          "dateTimeSent": "2023-11-07T12:01:49.3121817+00:00"
+        },
+        {
+          "message": "If you order over 100 units we can give you a 25% bulk buy discount.",
+          "from": "supplier",
+          "to": "customer",
+          "dateTimeSent": "2023-11-07T12:06:49.3121817+00:00"
+        }
+      ]
+    }
+  ]
+}

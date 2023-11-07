@@ -1,11 +1,17 @@
-﻿<div class="chat-bubble @GetSideClass()">
-    <p>Hello World</p>
+﻿<div class="chat-bubble @GetSideClass()" title="@Title">
+    <p>@Chat</p>
 </div>
 
 @code {
 
     [Parameter]
     public ChatBubbleSide Side { get; set; }
+
+    [Parameter]
+    public string Chat { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
 
     private string GetSideClass()
     {

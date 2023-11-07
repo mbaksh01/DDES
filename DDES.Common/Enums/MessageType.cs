@@ -5,4 +5,6 @@ public enum MessageType
     Authenticate,
     Unknown,
     ClientConnected,
+    GetThreads,
+    SendThreadMessage,
 }

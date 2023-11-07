@@ -5,6 +5,8 @@ namespace DDES.Application2.Services.Abstractions;
 
 public interface IAuthenticationService
 {
+    public User? User { get; }
+
     bool Authenticate(string username, string password,
         [MaybeNullWhen(false)] out User user);
 }
