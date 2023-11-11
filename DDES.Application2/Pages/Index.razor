@@ -1,5 +1,6 @@
 ﻿@page "/"
-@using DDES.Application2.Services
+@using Microsoft.Extensions.Logging
+@using DDES.Application2.Services.Abstractions
 
 <h1>Hello, world!</h1>
 
@@ -7,13 +8,19 @@ Welcome to your new app.
 
 <a href="/login">Login</a>
 
-<button @onclick="Subscribe">Subscribe</button>
-
 @code {
 
-    private void Subscribe()
+    [Inject]
+    private ISubscriptionService SubscriptionService { get; set; } = default!;
+
+    [Inject]
+    private ILogger<Index> Logger { get; set; } = default!;
+
+    protected override void OnInitialized()
     {
-        new SubscriptionService().Subscribe();
+        SubscriptionService.MessageReceived += (topic, message) => { Logger.LogInformation($"Topic: {topic}, Message: {message}"); };
+
+        base.OnInitialized();
     }
 
 }

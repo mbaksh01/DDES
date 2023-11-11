@@ -1,21 +1,23 @@
-﻿<div class="nav-bar">
-    <div class="@SelectedIfCurrentPage("Dashboard")">
+﻿@implements IDisposable
+
+<div class="nav-bar">
+    <div class="@(_selectedPage["dashboard"] ? "selected" : "")">
         <a href="">Dashboard</a>
         <div></div>
     </div>
-    <div class="@SelectedIfCurrentPage("Products")">
+    <div class="@(_selectedPage["products"] ? "selected" : "")">
         <a href="products">Products</a>
         <div></div>
     </div>
-    <div class="@SelectedIfCurrentPage("Notifications")">
-        <a href="notifications">Notification</a>
+    <div class="@(_selectedPage["notifications"] ? "selected" : "")">
+        <a href="notifications">Notifications</a>
         <div></div>
     </div>
-    <div class="@SelectedIfCurrentPage("Messages")">
+    <div class="@(_selectedPage["messages"] ? "selected" : "")">
         <a href="messages">Messages</a>
         <div></div>
     </div>
-    <div class="@SelectedIfCurrentPage("Account")">
+    <div class="@(_selectedPage["account"] ? "selected" : "")">
         <a href="account">Account</a>
         <div></div>
     </div>
@@ -26,17 +28,39 @@
     [Inject]
     NavigationManager NavigationManager { get; set; } = default!;
 
-    private string SelectedIfCurrentPage(string option)
-    {
-        if (option == "Dashboard"
-            && NavigationManager.Uri == NavigationManager.BaseUri)
-        {
-            return "selected";
-        }
+    private string _lastSelectedPage = "dashboard";
 
-        return NavigationManager.Uri.EndsWith(option, StringComparison.OrdinalIgnoreCase)
-            ? "selected"
-            : string.Empty;
+    private readonly Dictionary<string, bool> _selectedPage = new()
+    {
+        ["dashboard"] = true,
+        ["products"] = false,
+        ["notifications"] = false,
+        ["messages"] = false,
+        ["account"] = false,
+    };
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+
+        base.OnInitialized();
+    }
+
+    private void LocationChanged(object? obj, LocationChangedEventArgs args)
+    {
+        string page = NavigationManager
+            .Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..];
+
+        _selectedPage[page] = true;
+        _selectedPage[_lastSelectedPage] = false;
+        _lastSelectedPage = page;
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
     }
 
 }

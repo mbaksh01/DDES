@@ -1,7 +1,7 @@
 ﻿{
   "threads": [
     {
-      "supplierUsername": "customer",
+      "supplierUsername": "supplier",
       "customerUsername": "customer",
       "messages": [
         {

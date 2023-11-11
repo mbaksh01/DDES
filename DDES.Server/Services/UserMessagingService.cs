@@ -38,4 +38,20 @@ public class UserMessagingService
                 || t.CustomerUsername.Equals(username,
                     StringComparison.OrdinalIgnoreCase));
     }
+
+    public void AddThreadMessage(
+        string supplierUsername,
+        string customerUsername,
+        ThreadMessage message)
+    {
+        Thread? thread = _threads
+            .ThreadList
+            .FirstOrDefault(t =>
+                t.SupplierUsername.Equals(supplierUsername,
+                    StringComparison.OrdinalIgnoreCase)
+                && t.CustomerUsername.Equals(customerUsername,
+                    StringComparison.OrdinalIgnoreCase));
+
+        thread?.Messages.Add(message);
+    }
 }

@@ -16,6 +16,13 @@ builder.ConfigureServices(services =>
 
 IHost app = builder.Build();
 
+PublishingService publishingService =
+    app.Services.GetRequiredService<PublishingService>();
+
+Thread notifications =
+    new(() => publishingService.PublishMessage("test", "Hello World"));
+notifications.Start();
+
 MessagingService messagingService =
     app.Services.GetRequiredService<MessagingService>();
 

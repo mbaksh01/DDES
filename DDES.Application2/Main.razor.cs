@@ -2,6 +2,7 @@
 using DDES.Common.Enums;
 using DDES.Common.Models;
 using Microsoft.AspNetCore.Components;
+using Thread = System.Threading.Thread;
 
 namespace DDES.Application2;
 
@@ -11,6 +12,9 @@ public partial class Main : ComponentBase
 
     [Inject]
     private IMessagingService MessagingService { get; set; } = default!;
+
+    [Inject]
+    private ISubscriptionService SubscriptionService { get; set; } = default!;
 
     protected override void OnInitialized()
     {
@@ -26,6 +30,9 @@ public partial class Main : ComponentBase
         {
             ClientService.ClientId = response.Content!.ClientId;
         }
+
+        Thread thread = new(() => SubscriptionService.SubscribeAsync());
+        thread.Start();
 
         base.OnInitialized();
     }

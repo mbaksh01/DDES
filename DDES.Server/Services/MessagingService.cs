@@ -66,21 +66,24 @@ internal class MessagingService
         _logger.LogInformation(
             "Processing message. Message Type: {messageType}, Content: {content}.",
             msg.MessageType,
-            msg.Data);
+            msg.Content);
 
         return msg.MessageType switch
         {
             MessageType.Authenticate => EncryptionHelper.Encrypt(
-                Authenticate(msg.ClientId, msg.Data)),
+                Authenticate(msg.ClientId, msg.Content)),
             MessageType.GetThreads => EncryptionHelper.Encrypt(
                 GetThreads(msg.ClientId)),
             MessageType.ClientConnected => EncryptionHelper.Encrypt(
-                ClientConnected(msg.Data)),
+                ClientConnected(msg.Content)),
+            MessageType.SendThreadMessage => EncryptionHelper.Encrypt(
+                ReceiveThreadMessage(msg.Content)),
             _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
         };
     }
 
-    private ResponseMessage<User> Authenticate(Guid clientId,
+    private ResponseMessage<User> Authenticate(
+        Guid clientId,
         ReadOnlySpan<char> message)
     {
         User? user = JsonSerializer.Deserialize<User>(message);
@@ -128,6 +131,28 @@ internal class MessagingService
             {
                 ThreadList = threads.ToList(),
             },
+        };
+    }
+
+    private ResponseMessage<string> ReceiveThreadMessage(
+        ReadOnlySpan<char> threadMessageJson)
+    {
+        ThreadMessageRequest? request =
+            JsonSerializer.Deserialize<ThreadMessageRequest>(threadMessageJson);
+
+        if (request is null)
+        {
+            return ResponseMessage<string>.Empty;
+        }
+
+        _userMessaging.AddThreadMessage(
+            request.SupplierUsername,
+            request.CustomerUsername,
+            request.Message);
+
+        return new ResponseMessage<string>()
+        {
+            Successs = true,
         };
     }
 

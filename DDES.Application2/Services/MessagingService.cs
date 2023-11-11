@@ -18,13 +18,14 @@ public class MessagingService : IMessagingService
     }
 
     public ResponseMessage<TResponse> Send<TModel, TResponse>(
-        MessageType messageType, TModel data)
+        MessageType messageType,
+        TModel data)
     {
         RequestMessage<string> message = new()
         {
             ClientId = _clientService.ClientId,
             MessageType = messageType,
-            Data = JsonSerializer.Serialize(data),
+            Content = JsonSerializer.Serialize(data),
         };
 
         using RequestSocket requestSocket = new();

@@ -21,6 +21,8 @@ public partial class Messages : ComponentBase
 
     [Inject] private IAuthenticationService AuthenticationService { get; set; }
 
+    [Inject] private IUserMessagingService UserMessagingService { get; set; }
+
     protected override void OnInitialized()
     {
         ResponseMessage<Threads> response =
@@ -54,7 +56,7 @@ public partial class Messages : ComponentBase
             return;
         }
 
-        _currentThread.Messages.Add(new ThreadMessage
+        ThreadMessage threadMessage = new()
         {
             From = _currentRole,
             To = _currentRole.Equals("customer",
@@ -63,7 +65,14 @@ public partial class Messages : ComponentBase
                 : "customer",
             MessageText = _message,
             DateTimeSent = DateTime.Now,
-        });
+        };
+
+        _currentThread.Messages.Add(threadMessage);
+
+        UserMessagingService.SendMessage(
+            "supplier",
+            "customer",
+            threadMessage);
 
         _message = string.Empty;
     }

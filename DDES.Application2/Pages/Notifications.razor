@@ -2,15 +2,15 @@
 
 <div class="notification-panel-container">
     <NotificationPanel Title="My Notifications">
-        <Notification>YO</Notification>
-        <Notification></Notification>
-        <Notification></Notification>
+        @foreach (var notification in _personalNotifications)
+        {
+            <Notification Title="@notification.Topic"></Notification>
+        }
     </NotificationPanel>
     <NotificationPanel Title="General Notifications">
-        <Notification></Notification>
-        <Notification></Notification>
-        <Notification></Notification>
-        <Notification></Notification>
-        <Notification></Notification>
+        @foreach (var notification in _generalNotifications)
+        {
+            <Notification Title="@notification.Topic"></Notification>
+        }
     </NotificationPanel>
 </div>

@@ -26,7 +26,9 @@ public static class MauiProgram
         builder.Services
             .AddSingleton<IAuthenticationService, AuthenticationService>()
             .AddSingleton<IMessagingService, MessagingService>()
-            .AddSingleton<IClientService, ClientService>();
+            .AddSingleton<IClientService, ClientService>()
+            .AddSingleton<IUserMessagingService, UserMessagingService>()
+            .AddSingleton<ISubscriptionService, SubscriptionService>();
 
         return builder.Build();
     }
