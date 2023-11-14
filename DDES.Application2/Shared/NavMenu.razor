@@ -1,75 +1,34 @@
 ﻿@implements IDisposable
 
 <div class="nav-bar">
-    <div class="@(_selectedPage["dashboard"] ? "selected" : "")">
-        <a href="">Dashboard</a>
-        <div></div>
-    </div>
-    <div class="@(_selectedPage["products"] ? "selected" : "")">
-        <a href="products">Products</a>
-        <div></div>
-    </div>
-    <div class="@(_selectedPage["notifications"] ? "selected" : "")">
-        <a href="notifications">Notifications</a>
-        <div></div>
-    </div>
-    <div class="@(_selectedPage["messages"] ? "selected" : "")">
-        <a href="messages">Messages</a>
-        <div></div>
-    </div>
-    <div class="@(_selectedPage["account"] ? "selected" : "")">
-        <a href="account">Account</a>
-        <div></div>
-    </div>
+    @if (AuthenticationService.IsAuthenticated)
+    {
+        <div class="@(_selectedPage["dashboard"] ? "selected" : "")">
+            <a href="">Dashboard</a>
+            <div></div>
+        </div>
+        <div class="@(_selectedPage["products"] ? "selected" : "")">
+            <a href="products">Products</a>
+            <div></div>
+        </div>
+        <div class="@(_selectedPage["notifications"] ? "selected" : "")">
+            <a href="notifications">Notifications</a>
+            <div></div>
+        </div>
+        <div class="@(_selectedPage["messages"] ? "selected" : "")">
+            <a href="messages">Messages</a>
+            <div></div>
+        </div>
+        <div class="@(_selectedPage["account"] ? "selected" : "")">
+            <a href="account">Account</a>
+            <div></div>
+        </div>
+    }
+    else
+    {
+        <div class="@(_selectedPage["login"] ? "selected" : "")">
+            <a href="account">Login</a>
+            <div></div>
+        </div>
+    }
 </div>
-
-@code {
-
-    [Inject]
-    NavigationManager NavigationManager { get; set; } = default!;
-
-    private string _lastSelectedPage = "dashboard";
-
-    private readonly Dictionary<string, bool> _selectedPage = new()
-    {
-        ["dashboard"] = true,
-        ["products"] = false,
-        ["notifications"] = false,
-        ["messages"] = false,
-        ["account"] = false,
-    };
-
-    protected override void OnInitialized()
-    {
-        NavigationManager.LocationChanged += LocationChanged;
-
-        base.OnInitialized();
-    }
-
-    private void LocationChanged(object? obj, LocationChangedEventArgs args)
-    {
-        string page = NavigationManager
-            .Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..];
-
-        if (string.IsNullOrEmpty(page))
-        {
-            _selectedPage["dashboard"] = true;
-            _selectedPage[_lastSelectedPage] = false;
-            _lastSelectedPage = "dashboard";
-        }
-        else
-        {
-            _selectedPage[page] = true;
-            _selectedPage[_lastSelectedPage] = false;
-            _lastSelectedPage = page;
-        }
-
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= LocationChanged;
-    }
-
-}

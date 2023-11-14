@@ -10,6 +10,13 @@ public partial class MainLayout : LayoutComponentBase
     [Inject]
     private ISubscriptionService SubscriptionService { get; set; } = default!;
 
+    [Inject]
+    private IAuthenticationService AuthenticationService { get; set; }
+        = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
     protected override void OnInitialized()
     {
         SubscriptionService.MessageReceivedAsync += async (topic, message) =>
@@ -20,8 +27,13 @@ public partial class MainLayout : LayoutComponentBase
             _notification = null;
         };
 
+        if (AuthenticationService.IsAuthenticated == false)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+
         base.OnInitialized();
     }
 
-    record Notification(string Topic, string? Message);
+    private record Notification(string Topic, string? Message);
 }

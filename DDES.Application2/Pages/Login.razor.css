@@ -1,0 +1,20 @@
+﻿button {
+  background-color: white;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+p {
+  margin: 0;
+}
+
+input {
+  margin-bottom: 1rem;
+}
+
+.login-page {
+  height: calc(100vh - 10rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

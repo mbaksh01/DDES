@@ -11,12 +11,16 @@ public class AuthenticationService : IAuthenticationService
 
     public User? User { get; private set; }
 
+    public bool IsAuthenticated => User is not null;
+
     public AuthenticationService(IMessagingService messagingService)
     {
         _messagingService = messagingService;
     }
 
-    public bool Authenticate(string username, string password,
+    public bool Authenticate(
+        string username,
+        string password,
         [MaybeNullWhen(false)] out User user)
     {
         var response = _messagingService.Send<User, User>(

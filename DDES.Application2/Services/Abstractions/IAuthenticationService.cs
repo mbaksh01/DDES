@@ -7,6 +7,10 @@ public interface IAuthenticationService
 {
     public User? User { get; }
 
-    bool Authenticate(string username, string password,
+    bool IsAuthenticated { get; }
+
+    bool Authenticate(
+        string username,
+        string password,
         [MaybeNullWhen(false)] out User user);
 }
