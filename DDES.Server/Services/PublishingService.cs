@@ -19,15 +19,10 @@ public class PublishingService : IDisposable
 
     public void PublishMessage<TMessage>(string topic, TMessage message)
     {
-        while (true)
-        {
-            string encryptedMessage = EncryptionHelper.Encrypt(message);
+        string encryptedMessage = EncryptionHelper.Encrypt(message);
 
-            PublishMessageEncrypted(topic, encryptedMessage);
-            _logger.LogInformation("Message published");
-
-            Thread.Sleep(1000);
-        }
+        PublishMessageEncrypted(topic, encryptedMessage);
+        _logger.LogInformation("Message published, Topic: {topic}.", topic);
     }
 
     private void PublishMessageEncrypted(string topic, string encryptedMessage)

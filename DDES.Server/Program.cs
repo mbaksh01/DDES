@@ -1,4 +1,5 @@
-﻿using DDES.Server.Services;
+﻿using DDES.Common.Enums;
+using DDES.Server.Services;
 using DDES.Server.Services.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,8 +22,16 @@ PublishingService publishingService =
     app.Services.GetRequiredService<PublishingService>();
 
 Thread notifications =
-    new(() => publishingService.PublishMessage("test", "Hello World"));
-// notifications.Start();
+    new(() =>
+    {
+        while (true)
+        {
+            publishingService.PublishMessage(Topics.CustomerNotification,
+                "Hello World");
+            Thread.Sleep(1000);
+        }
+    });
+notifications.Start();
 
 MessagingService messagingService =
     app.Services.GetRequiredService<MessagingService>();

@@ -1,4 +1,5 @@
 ﻿using DDES.Application2.Services.Abstractions;
+using DDES.Common.Enums;
 using DDES.Common.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -9,16 +10,22 @@ public partial class Account : ComponentBase
     private bool _showCreateProduct;
     private bool _updateExistingProduct;
     private bool _deleteProduct;
+    private bool _showBroadcastMessage;
 
     private List<Product> _products = new();
 
     private Product? _selectedProduct;
+
+    private string _broadcastMessage = string.Empty;
 
     [Inject]
     private IAuthenticationService AuthenticationService { get; set; }
         = default!;
 
     [Inject] private IProductService ProductService { get; set; } = default!;
+
+    [Inject]
+    private IMessagingService MessagingService { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
@@ -62,6 +69,12 @@ public partial class Account : ComponentBase
         _selectedProduct = _products.First();
     }
 
+    private void AccountPanelBroadcastMessage()
+    {
+        _showBroadcastMessage = true;
+        _broadcastMessage = string.Empty;
+    }
+
     private void ProductSelectedChanged(ChangeEventArgs args)
     {
         string? productName = args.Value as string;
@@ -98,5 +111,16 @@ public partial class Account : ComponentBase
         }
 
         ProductService.DeleteProduct(_selectedProduct);
+    }
+
+    private void BroadcastMessage()
+    {
+        if (string.IsNullOrEmpty(_broadcastMessage))
+        {
+            return;
+        }
+
+        MessagingService.Send<string, int>(MessageType.BroadcastMessage,
+            _broadcastMessage);
     }
 }

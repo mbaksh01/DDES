@@ -13,6 +13,8 @@ public class AuthenticationService : IAuthenticationService
 
     public bool IsAuthenticated => User is not null;
 
+    public event Action<User>? UserAuthenticated;
+
     public AuthenticationService(IMessagingService messagingService)
     {
         _messagingService = messagingService;
@@ -32,6 +34,12 @@ public class AuthenticationService : IAuthenticationService
             });
 
         User = user = response.Content;
+
+        if (response.Successs)
+        {
+            UserAuthenticated?.Invoke(user!);
+        }
+
         return response.Successs;
     }
 }

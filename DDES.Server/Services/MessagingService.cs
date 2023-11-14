@@ -16,19 +16,22 @@ internal class MessagingService
     private readonly UserMessagingService _userMessaging;
     private readonly IClientService _clientService;
     private readonly IProductService _productService;
+    private readonly PublishingService _publishingService;
 
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
         IClientService clientService,
         UserMessagingService userMessaging,
-        IProductService productService)
+        IProductService productService,
+        PublishingService publishingService)
     {
         _logger = logger;
         _userService = userService;
         _clientService = clientService;
         _userMessaging = userMessaging;
         _productService = productService;
+        _publishingService = publishingService;
     }
 
     public void Listen(int port = 5555)
@@ -88,6 +91,8 @@ internal class MessagingService
                 UpdateProduct(msg.Content)),
             MessageType.DeleteProduct => EncryptionHelper.Encrypt(
                 DeleteProduct(msg.Content)),
+            MessageType.BroadcastMessage => EncryptionHelper.Encrypt(
+                BroadcastMessage(msg.Content)),
             _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
         };
     }
@@ -259,6 +264,22 @@ internal class MessagingService
         {
             Successs = true,
             Content = product,
+        };
+    }
+
+    private ResponseMessage<int> BroadcastMessage(string? message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return ResponseMessage<int>.Empty;
+        }
+
+        _publishingService.PublishMessage(Topics.CustomerNotification, message);
+
+        return new ResponseMessage<int>
+        {
+            Successs = true,
+            Content = 0,
         };
     }
 }

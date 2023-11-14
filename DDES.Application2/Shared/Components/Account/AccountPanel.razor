@@ -17,6 +17,7 @@
                 <button @onclick="SellProduct">Sell Product</button>
                 <button @onclick="UpdateProduct">Update Existing Product</button>
                 <button @onclick="DeleteProduct">Delete Product</button>
+                <button @onclick="BroadcastMessage">Broadcast Message</button>
             }
         }
     </div>
@@ -35,5 +36,8 @@
 
     [Parameter]
     public EventCallback DeleteProduct { get; set; }
+
+    [Parameter]
+    public EventCallback BroadcastMessage { get; set; }
 
 }

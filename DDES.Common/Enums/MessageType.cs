@@ -10,5 +10,6 @@ public enum MessageType
     GetProducts,
     AddProduct,
     UpdateProduct,
-    DeleteProduct
+    DeleteProduct,
+    BroadcastMessage
 }

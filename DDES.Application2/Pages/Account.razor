@@ -6,7 +6,8 @@
             User="AuthenticationService.User"
             SellProduct="AccountPanelSellProductClicked"
             UpdateProduct="AccountPanelUpdateProductClicked"
-            DeleteProduct="AccountPanelDeleteProductClicked">
+            DeleteProduct="AccountPanelDeleteProductClicked"
+            BroadcastMessage="AccountPanelBroadcastMessage">
         </AccountPanel>
     </div>
     <div class="account-update-option">
@@ -52,6 +53,14 @@
                 </select>
                 <button @onclick="DeleteProduct">Delete Product</button>
             </div>
+        }
+        @if (_showBroadcastMessage)
+        {
+            <div class="broadcast-message-container">
+                <p>Message:</p>
+                <input type="text" @bind-value="_broadcastMessage"/>
+            </div>
+            <button @onclick="BroadcastMessage">Broadcast</button>
         }
     </div>
 </div>

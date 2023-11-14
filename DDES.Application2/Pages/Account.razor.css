@@ -42,3 +42,11 @@
 .update-product-options {
   margin-bottom: 1rem;
 }
+
+.broadcast-message-container {
+  display: flex;
+}
+
+.broadcast-message-container > input {
+  flex-grow: 1;
+}

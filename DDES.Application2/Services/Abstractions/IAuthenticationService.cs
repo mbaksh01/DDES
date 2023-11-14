@@ -9,6 +9,8 @@ public interface IAuthenticationService
 
     bool IsAuthenticated { get; }
 
+    event Action<User> UserAuthenticated;
+
     bool Authenticate(
         string username,
         string password,

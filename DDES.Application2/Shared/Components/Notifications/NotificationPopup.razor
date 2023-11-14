@@ -1,4 +1,14 @@
 ﻿<div class="notification-popup">
-    <h4>Topic</h4>
-    <p>Description</p>
+    <h4>@Topic</h4>
+    <p>@Description</p>
 </div>
+
+@code {
+
+    [Parameter]
+    public string Topic { get; set; } = "Topic";
+
+    [Parameter]
+    public string Description { get; set; } = "Description";
+
+}

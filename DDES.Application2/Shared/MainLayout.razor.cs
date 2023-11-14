@@ -27,6 +27,11 @@ public partial class MainLayout : LayoutComponentBase
             _notification = null;
         };
 
+        AuthenticationService.UserAuthenticated += _ =>
+        {
+            SubscriptionService.AddRoleBasedSubscriptions();
+        };
+
         if (AuthenticationService.IsAuthenticated == false)
         {
             NavigationManager.NavigateTo("/login");

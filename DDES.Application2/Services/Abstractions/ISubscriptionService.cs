@@ -6,4 +6,6 @@ public interface ISubscriptionService
     event Func<string, string?, Task> MessageReceivedAsync;
 
     Task SubscribeAsync(CancellationToken cancellationToken = default);
+
+    void AddRoleBasedSubscriptions();
 }
