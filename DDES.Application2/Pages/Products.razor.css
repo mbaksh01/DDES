@@ -1,8 +1,26 @@
-﻿.products {
-    width: 80%;
-    margin: auto;
+﻿.sort-container-flex {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.sort-container {
+  display: flex;
+}
+
+.sort-container > p {
+  margin: 0;
+}
+
+.sort-container > select {
+  margin-left: 1rem;
+}
+
+.products {
+  margin: auto;
+  width: 80%;
 }
 
 .product:not(:last-child) {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }

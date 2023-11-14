@@ -1,6 +1,16 @@
 ﻿@page "/products"
 
 <div class="products">
+    <div class="sort-container-flex">
+        <div class="sort-container">
+            <p>Sort by</p>
+            <select @onchange="SortChanged">
+                <option value="name">Name</option>
+                <option value="priceHighest">Price (Highest first)</option>
+                <option value="priceLowest">Price (Lowest first)</option>
+            </select>
+        </div>
+    </div>
     @foreach (var product in _products)
     {
         <div class="product">

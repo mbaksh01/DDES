@@ -15,4 +15,16 @@ public partial class Products : ComponentBase
         _products = ProductService.GetAllProducts();
         base.OnInitialized();
     }
+
+    private void SortChanged(ChangeEventArgs args)
+    {
+        _products = (args.Value as string) switch
+        {
+            "name" => _products.OrderBy(p => p.Name).ToList(),
+            "priceHighest" => _products.OrderByDescending(p => p.Price)
+                .ToList(),
+            "priceLowest" => _products.OrderBy(p => p.Price).ToList(),
+            _ => _products,
+        };
+    }
 }

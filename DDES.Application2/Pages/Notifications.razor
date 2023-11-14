@@ -1,13 +1,13 @@
 ﻿@page "/notifications"
 
 <div class="notification-panel-container">
-    <NotificationPanel Title="My Notifications">
+    <NotificationPanel Title="My Notifications" ClearAllClicked="ClearAllPersonalNotifications">
         @foreach (var notification in _personalNotifications)
         {
             <Notification Title="@notification.Topic"></Notification>
         }
     </NotificationPanel>
-    <NotificationPanel Title="General Notifications">
+    <NotificationPanel Title="General Notifications" ClearAllClicked="ClearAllGeneralNotifications">
         @foreach (var notification in _generalNotifications)
         {
             <Notification Title="@notification.Topic"></Notification>

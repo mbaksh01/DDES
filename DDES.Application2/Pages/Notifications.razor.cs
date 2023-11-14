@@ -33,5 +33,15 @@ public partial class Notifications : ComponentBase
         base.OnInitialized();
     }
 
+    private void ClearAllPersonalNotifications()
+    {
+        _personalNotifications.Clear();
+    }
+
+    private void ClearAllGeneralNotifications()
+    {
+        _generalNotifications.Clear();
+    }
+
     record Notification(string Topic);
 }
