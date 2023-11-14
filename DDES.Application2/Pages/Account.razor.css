@@ -1,9 +1,44 @@
-﻿.account-container {
+﻿button {
+  background-color: white;
+  border: 1px solid #797979;
+  border-radius: 5px;
+}
+
+.account-container {
   margin: 1.5rem 5rem;
   height: calc(100vh - 10rem);
+  display: flex;
+  gap: 1rem;
 }
 
 .account-panel {
   width: 33%;
   height: 100%;
+}
+
+.account-update-option {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid #797979;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.create-product-container:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.crate-product-options {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.crate-product-options > button:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.update-product-options {
+  margin-bottom: 1rem;
 }

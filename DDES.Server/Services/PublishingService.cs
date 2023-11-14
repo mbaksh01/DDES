@@ -8,9 +8,11 @@ public class PublishingService : IDisposable
 {
     private readonly PublisherSocket _publisher;
     private const int PublishPort = 5554;
+    private readonly ILogger<PublishingService> _logger;
 
-    public PublishingService()
+    public PublishingService(ILogger<PublishingService> logger)
     {
+        _logger = logger;
         _publisher = new PublisherSocket();
         _publisher.Bind($"tcp://*:{PublishPort}");
     }
@@ -22,6 +24,7 @@ public class PublishingService : IDisposable
             string encryptedMessage = EncryptionHelper.Encrypt(message);
 
             PublishMessageEncrypted(topic, encryptedMessage);
+            _logger.LogInformation("Message published");
 
             Thread.Sleep(1000);
         }

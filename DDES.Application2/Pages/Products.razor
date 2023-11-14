@@ -1,19 +1,14 @@
 ﻿@page "/products"
 
 <div class="products">
-    <div class="product">
-        <Product></Product>
-    </div>
-    <div class="product">
-        <Product></Product>
-    </div>
-    <div class="product">
-        <Product></Product>
-    </div>
-    <div class="product">
-        <Product></Product>
-    </div>
-    <div class="product">
-        <Product></Product>
-    </div>
+    @foreach (var product in _products)
+    {
+        <div class="product">
+            <Product
+                Name="@product.Name"
+                Description="@product.Description"
+                Price="@product.Price"
+                SellerName="@product.Seller"/>
+        </div>
+    }
 </div>

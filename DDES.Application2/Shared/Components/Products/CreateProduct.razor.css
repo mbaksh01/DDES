@@ -1,0 +1,33 @@
+﻿.product-container {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  border-radius: 5px;
+  border: 1px solid #797979;
+}
+
+.product-inputs {
+  width: 100%;
+}
+
+.product-inputs > div {
+  display: flex;
+}
+
+.product-inputs > div:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.product-inputs > div > p {
+  margin: 0;
+}
+
+.product-inputs > div > input,
+.product-inputs > div > textarea {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.product-inputs > div > textarea {
+  height: 5rem;
+}

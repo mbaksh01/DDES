@@ -1,0 +1,15 @@
+﻿.notification-popup {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 20rem;
+  padding: 1rem;
+  box-shadow: #7ef5ae 2px 2px 2px 2px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.notification-popup > h3,
+.notification-popup > p {
+  margin: 0;
+}

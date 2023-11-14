@@ -7,4 +7,8 @@ public enum MessageType
     ClientConnected,
     GetThreads,
     SendThreadMessage,
+    GetProducts,
+    AddProduct,
+    UpdateProduct,
+    DeleteProduct
 }

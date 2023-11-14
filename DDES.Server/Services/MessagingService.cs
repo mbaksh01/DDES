@@ -15,17 +15,20 @@ internal class MessagingService
     private readonly IUserService _userService;
     private readonly UserMessagingService _userMessaging;
     private readonly IClientService _clientService;
+    private readonly IProductService _productService;
 
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
         IClientService clientService,
-        UserMessagingService userMessaging)
+        UserMessagingService userMessaging,
+        IProductService productService)
     {
         _logger = logger;
         _userService = userService;
         _clientService = clientService;
         _userMessaging = userMessaging;
+        _productService = productService;
     }
 
     public void Listen(int port = 5555)
@@ -78,6 +81,13 @@ internal class MessagingService
                 ClientConnected(msg.Content)),
             MessageType.SendThreadMessage => EncryptionHelper.Encrypt(
                 ReceiveThreadMessage(msg.Content)),
+            MessageType.GetProducts => EncryptionHelper.Encrypt(GetProducts()),
+            MessageType.AddProduct => EncryptionHelper.Encrypt(
+                AddProduct(msg.Content)),
+            MessageType.UpdateProduct => EncryptionHelper.Encrypt(
+                UpdateProduct(msg.Content)),
+            MessageType.DeleteProduct => EncryptionHelper.Encrypt(
+                DeleteProduct(msg.Content)),
             _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
         };
     }
@@ -184,6 +194,71 @@ internal class MessagingService
             {
                 ClientId = client.Id,
             }
+        };
+    }
+
+    private ResponseMessage<List<Product>> GetProducts()
+    {
+        return new ResponseMessage<List<Product>>()
+        {
+            Successs = true,
+            Content = _productService.GetAllProducts(),
+        };
+    }
+
+    private ResponseMessage<Product> AddProduct(ReadOnlySpan<char> productJson)
+    {
+        Product? product = JsonSerializer.Deserialize<Product>(productJson);
+
+        if (product is null)
+        {
+            return ResponseMessage<Product>.Empty;
+        }
+
+        _productService.AddProduct(product);
+
+        return new ResponseMessage<Product>
+        {
+            Successs = true,
+            Content = product,
+        };
+    }
+
+    private ResponseMessage<Product> UpdateProduct(
+        ReadOnlySpan<char> productJson)
+    {
+        Product? product = JsonSerializer.Deserialize<Product>(productJson);
+
+        if (product is null)
+        {
+            return ResponseMessage<Product>.Empty;
+        }
+
+        _productService.UpdateProduct(product);
+
+        return new ResponseMessage<Product>
+        {
+            Successs = true,
+            Content = product,
+        };
+    }
+
+    private ResponseMessage<Product> DeleteProduct(
+        ReadOnlySpan<char> productJson)
+    {
+        Product? product = JsonSerializer.Deserialize<Product>(productJson);
+
+        if (product is null)
+        {
+            return ResponseMessage<Product>.Empty;
+        }
+
+        _productService.DeleteProduct(product);
+
+        return new ResponseMessage<Product>
+        {
+            Successs = true,
+            Content = product,
         };
     }
 }

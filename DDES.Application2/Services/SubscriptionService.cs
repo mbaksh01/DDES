@@ -27,7 +27,7 @@ public class SubscriptionService : ISubscriptionService
         subscriber.Connect("tcp://127.0.0.1:5554");
         subscriber.Subscribe(Topics.PersonalNotification);
         subscriber.Subscribe(Topics.GeneralNotification);
-        subscriber.Subscribe("Test");
+        subscriber.Subscribe("test");
 
         while (cancellationToken.IsCancellationRequested == false)
         {

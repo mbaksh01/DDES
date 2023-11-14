@@ -4,7 +4,7 @@
     <main>
         <div class="top-row">
             <h1>Pro-Supply-Chain</h1>
-            <NavMenu />
+            <NavMenu/>
             <div></div>
         </div>
 
@@ -12,4 +12,9 @@
             @Body
         </article>
     </main>
+
+    @if (_notification is not null)
+    {
+        <NotificationPopup></NotificationPopup>
+    }
 </div>

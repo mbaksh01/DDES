@@ -22,9 +22,9 @@ public class UserMessagingService
 
         using StreamReader sr = new("Data/messages.json");
 
-        string users = sr.ReadToEnd();
+        string threads = sr.ReadToEnd();
 
-        _threads = JsonSerializer.Deserialize<Threads>(users) ??
+        _threads = JsonSerializer.Deserialize<Threads>(threads) ??
                    new Threads();
     }
 

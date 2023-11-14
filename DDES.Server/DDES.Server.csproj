@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <None Remove="Data\credentials.json" />
+    <None Update="Data\products.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

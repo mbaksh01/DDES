@@ -23,7 +23,7 @@ public class UserMessagingService : IUserMessagingService
         ThreadMessage message)
     {
         _messagingService
-            .Send<ThreadMessageRequest, ResponseMessage<string>>(
+            .Send<ThreadMessageRequest, string>(
                 MessageType.SendThreadMessage, new ThreadMessageRequest
                 {
                     SupplierUsername = supplierName,

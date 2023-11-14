@@ -1,0 +1,51 @@
+﻿[
+  {
+    "id": "c3a613d8-da83-4158-9a1b-fa37b5bf9d47",
+    "name": "AMD Ryzen 7 5700X",
+    "price": 120,
+    "description": "Computer CPU designed for gaming.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "f0b17357-e81a-4a33-bad8-a1d38e46e727",
+    "name": "Gigabyte NVIDIA GeForce RTX 4060",
+    "price": 250,
+    "description": "Computer GPU designed triple A titles.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "d0f4b695-fb76-43de-b2ee-31c22158cd42",
+    "name": "Corsair VENGEANCE LPX DDR4 RAM 16GB (2x8GB) 3200MHz",
+    "price": 30,
+    "description": "Computer RAM designed for gaming.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "6e1b708c-c197-4439-afe1-8e53558ea877",
+    "name": "Samsung 970 EVO Plus 2 TB PCIe NVMe M.2 SSD",
+    "price": 80,
+    "description": "High availability, high speed computer storage.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "a22be76d-a601-48b0-b1e8-554daa232dda",
+    "name": "Corsair RM850x 80 PLUS Gold Fully Modular ATX 850 Watt Power Supply",
+    "price": 100,
+    "description": "Computer PSU designed for gaming.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "1632fb34-5ca0-43fb-ab4b-203f43a93d07",
+    "name": "MSI MAG FORGE 112R Mid-Tower PC Case",
+    "price": 45,
+    "description": "Computer case designed for gaming.",
+    "sellerUsername": "supplier"
+  },
+  {
+    "id": "18642523-b108-4e0a-83b4-30cbbf47b910",
+    "name": "CRUA 27 Inch 180HZ Curved Gaming Monitor",
+    "price": 100,
+    "description": "Monitor designed for gaming.",
+    "sellerUsername": "supplier"
+  }
+]

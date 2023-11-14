@@ -12,6 +12,7 @@ builder.ConfigureServices(services =>
     _ = services.AddSingleton<MessagingService>();
     _ = services.AddSingleton<PublishingService>();
     _ = services.AddSingleton<UserMessagingService>();
+    _ = services.AddSingleton<IProductService, ProductService>();
 });
 
 IHost app = builder.Build();
@@ -21,7 +22,7 @@ PublishingService publishingService =
 
 Thread notifications =
     new(() => publishingService.PublishMessage("test", "Hello World"));
-notifications.Start();
+// notifications.Start();
 
 MessagingService messagingService =
     app.Services.GetRequiredService<MessagingService>();

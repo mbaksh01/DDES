@@ -1,12 +1,39 @@
-﻿<div class="account-panel">
+﻿@using DDES.Common.Models
+<div class="account-panel">
     <div class="account-summary">
-        <img/>
-        <h3>Account Name</h3>
+        <div class="account-image-container">
+            <img alt="Account Image"/>
+        </div>
+        <h3>@User?.Username</h3>
     </div>
     <hr/>
     <div class="quick-actions">
         <h3>Quick Actions</h3>
-        <button>Sell Product</button>
-        <button>Edit Account</button>
+        @if (User is not null)
+        {
+            <button>Edit Account</button>
+            @if (User.Roles.Contains("supplier"))
+            {
+                <button @onclick="SellProduct">Sell Product</button>
+                <button @onclick="UpdateProduct">Update Existing Product</button>
+                <button @onclick="DeleteProduct">Delete Product</button>
+            }
+        }
     </div>
 </div>
+
+@code {
+
+    [Parameter]
+    public User? User { get; set; }
+
+    [Parameter]
+    public EventCallback SellProduct { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateProduct { get; set; }
+
+    [Parameter]
+    public EventCallback DeleteProduct { get; set; }
+
+}

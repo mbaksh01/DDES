@@ -2,6 +2,56 @@
 
 <div class="account-container">
     <div class="account-panel">
-        <AccountPanel></AccountPanel>
+        <AccountPanel
+            User="AuthenticationService.User"
+            SellProduct="AccountPanelSellProductClicked"
+            UpdateProduct="AccountPanelUpdateProductClicked"
+            DeleteProduct="AccountPanelDeleteProductClicked">
+        </AccountPanel>
+    </div>
+    <div class="account-update-option">
+        @if (_showCreateProduct)
+        {
+            @foreach (var product in _products)
+            {
+                <div class="create-product-container">
+                    <CreateProduct Product="product"></CreateProduct>
+                </div>
+            }
+            <div class="crate-product-options">
+                <button @onclick="AddProduct">Add Product</button>
+                <button @onclick="SellProducts">Sell Product(s)</button>
+            </div>
+        }
+        @if (_updateExistingProduct)
+        {
+            <select @onchange="ProductSelectedChanged" class="update-product-options">
+                @foreach (var product in _products)
+                {
+                    <option>@product.Name</option>
+                }
+            </select>
+            @if (_selectedProduct is not null)
+            {
+                <div class="create-product-container">
+                    <CreateProduct Product="_selectedProduct"></CreateProduct>
+                </div>
+                <div class="crate-product-options">
+                    <button @onclick="UpdateProduct">Update Product</button>
+                </div>
+            }
+        }
+        @if (_deleteProduct)
+        {
+            <div class="delete-product-container">
+                <select @onchange="ProductSelectedChanged">
+                    @foreach (var product in _products)
+                    {
+                        <option>@product.Name</option>
+                    }
+                </select>
+                <button @onclick="DeleteProduct">Delete Product</button>
+            </div>
+        }
     </div>
 </div>

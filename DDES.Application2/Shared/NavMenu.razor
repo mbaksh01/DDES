@@ -51,9 +51,18 @@
         string page = NavigationManager
             .Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..];
 
-        _selectedPage[page] = true;
-        _selectedPage[_lastSelectedPage] = false;
-        _lastSelectedPage = page;
+        if (string.IsNullOrEmpty(page))
+        {
+            _selectedPage["dashboard"] = true;
+            _selectedPage[_lastSelectedPage] = false;
+            _lastSelectedPage = "dashboard";
+        }
+        else
+        {
+            _selectedPage[page] = true;
+            _selectedPage[_lastSelectedPage] = false;
+            _lastSelectedPage = page;
+        }
 
         StateHasChanged();
     }

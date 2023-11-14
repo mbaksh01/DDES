@@ -1,0 +1,28 @@
+﻿<div class="product-container">
+    @* <div class="product-image-container"> *@
+    @*     <img src="@Image.Src" alt="@Image.Alt"/> *@
+    @* </div> *@
+    <div class="product-inputs">
+        <div>
+            <p>Name</p>
+            <input type="text" @bind-value="@Product.Name"
+                   placeholder="Enter product name"/>
+        </div>
+        <div>
+            <p>Price</p>
+            <input type="number" @bind-value="@Product.Price"/>
+        </div>
+        <div>
+            <p>Description</p>
+            <textarea @bind="@Product.Description"
+                placeholder="Enter product description"></textarea>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public DDES.Common.Models.Product Product { get; set; } = new();
+
+}
