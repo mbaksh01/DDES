@@ -9,4 +9,7 @@ public class User
     [JsonPropertyName("password")] public required string Password { get; set; }
 
     [JsonPropertyName("roles")] public required List<string> Roles { get; set; }
+
+    [JsonPropertyName("subscriptions")]
+    public required List<string> Subscriptions { get; set; }
 }

@@ -6,10 +6,16 @@ namespace DDES.Server.Services;
 
 internal class UserService : IUserService
 {
+    private readonly IClientService _clientService;
+    private readonly ILogger<UserService> _logger;
     private List<User> _users = new();
 
-    public UserService()
+    public UserService(
+        IClientService clientService,
+        ILogger<UserService> logger)
     {
+        _clientService = clientService;
+        _logger = logger;
         LoadUsers();
     }
 
@@ -47,5 +53,30 @@ internal class UserService : IUserService
             : user.Password != password
                 ? null
                 : user;
+    }
+
+    public bool AddSubscription(Guid clientId, string subscription)
+    {
+        string? username = _clientService.GetUsername(clientId);
+
+        if (username is null)
+        {
+            return false;
+        }
+
+        User? user = _users.Find(u => u.Username == username);
+
+        if (user is null)
+        {
+            return false;
+        }
+
+        user.Subscriptions.Add(subscription);
+
+        _logger.LogInformation(
+            "Added subscription: {subscription} for user: {username}",
+            subscription, username);
+
+        return true;
     }
 }

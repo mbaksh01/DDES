@@ -19,6 +19,10 @@
                 <button @onclick="DeleteProduct">Delete Product</button>
                 <button @onclick="BroadcastMessage">Broadcast Message</button>
             }
+            @if (User.Roles.Contains("customer"))
+            {
+                <button @onclick="SubscribeToMessage">Subscribe to notifications</button>
+            }
         }
     </div>
 </div>
@@ -39,5 +43,8 @@
 
     [Parameter]
     public EventCallback BroadcastMessage { get; set; }
+
+    [Parameter]
+    public EventCallback SubscribeToMessage { get; set; }
 
 }

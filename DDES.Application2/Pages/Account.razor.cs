@@ -11,12 +11,15 @@ public partial class Account : ComponentBase
     private bool _updateExistingProduct;
     private bool _deleteProduct;
     private bool _showBroadcastMessage;
+    private bool _showSubscriptions;
 
     private List<Product> _products = new();
 
     private Product? _selectedProduct;
 
     private string _broadcastMessage = string.Empty;
+
+    private string _selectedSubscription = string.Empty;
 
     [Inject]
     private IAuthenticationService AuthenticationService { get; set; }
@@ -26,6 +29,9 @@ public partial class Account : ComponentBase
 
     [Inject]
     private IMessagingService MessagingService { get; set; } = default!;
+
+    [Inject]
+    private ISubscriptionService SubscriptionService { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
@@ -75,6 +81,11 @@ public partial class Account : ComponentBase
         _broadcastMessage = string.Empty;
     }
 
+    private void AccountPanelSubscribe()
+    {
+        _showSubscriptions = true;
+    }
+
     private void ProductSelectedChanged(ChangeEventArgs args)
     {
         string? productName = args.Value as string;
@@ -122,5 +133,22 @@ public partial class Account : ComponentBase
 
         MessagingService.Send<string, int>(MessageType.BroadcastMessage,
             _broadcastMessage);
+    }
+
+    private void AddSubscription()
+    {
+        if (string.IsNullOrWhiteSpace(_selectedSubscription))
+        {
+            return;
+        }
+
+        string internalSubscriptionName = _selectedSubscription switch
+        {
+            "Customer Notifications" => Topics.CustomerNotification,
+            "Personal Notifications" => Topics.PersonalNotification,
+            _ => Topics.GeneralNotification,
+        };
+
+        SubscriptionService.AddSubscription(internalSubscriptionName);
     }
 }

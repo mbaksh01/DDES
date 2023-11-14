@@ -31,6 +31,7 @@ public class AuthenticationService : IAuthenticationService
                 Username = username,
                 Password = password,
                 Roles = new List<string>(),
+                Subscriptions = new List<string>(),
             });
 
         User = user = response.Content;

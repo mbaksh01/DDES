@@ -1,6 +1,7 @@
 ﻿using DDES.Application2.Services.Abstractions;
 using DDES.Common.Enums;
 using DDES.Common.Helpers;
+using DDES.Common.Models;
 using Microsoft.Extensions.Logging;
 using NetMQ;
 using NetMQ.Sockets;
@@ -10,20 +11,22 @@ namespace DDES.Application2.Services;
 public sealed class SubscriptionService : ISubscriptionService, IDisposable
 {
     private readonly ILogger<SubscriptionService> _logger;
+    private readonly IMessagingService _messagingService;
     private readonly SubscriberSocket _subscriber;
+    private readonly IAuthenticationService _authenticationService;
 
     public event Action<string, string?>? MessageReceived;
 
     public event Func<string, string?, Task>? MessageReceivedAsync;
 
-    private readonly IAuthenticationService _authenticationService;
-
     public SubscriptionService(
         ILogger<SubscriptionService> logger,
-        IAuthenticationService authenticationService)
+        IAuthenticationService authenticationService,
+        IMessagingService messagingService)
     {
         _logger = logger;
         _authenticationService = authenticationService;
+        _messagingService = messagingService;
 
         SubscriberSocket subscriber = new();
         subscriber.Connect("tcp://127.0.0.1:5554");
@@ -65,6 +68,17 @@ public sealed class SubscriptionService : ISubscriptionService, IDisposable
         if (_authenticationService.User?.Roles.Contains("customer") ?? false)
         {
             _subscriber.Subscribe(Topics.CustomerNotification);
+        }
+    }
+
+    public void AddSubscription(string subscription)
+    {
+        ResponseMessage<int> responseMessage = _messagingService
+            .Send<string, int>(MessageType.UpdateSubscription, subscription);
+
+        if (responseMessage.Successs)
+        {
+            _authenticationService.User!.Subscriptions.Add("subscription");
         }
     }
 

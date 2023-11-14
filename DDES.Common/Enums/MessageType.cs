@@ -11,5 +11,6 @@ public enum MessageType
     AddProduct,
     UpdateProduct,
     DeleteProduct,
-    BroadcastMessage
+    BroadcastMessage,
+    UpdateSubscription
 }

@@ -31,7 +31,7 @@ Thread notifications =
             Thread.Sleep(1000);
         }
     });
-notifications.Start();
+// notifications.Start();
 
 MessagingService messagingService =
     app.Services.GetRequiredService<MessagingService>();

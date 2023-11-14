@@ -93,6 +93,8 @@ internal class MessagingService
                 DeleteProduct(msg.Content)),
             MessageType.BroadcastMessage => EncryptionHelper.Encrypt(
                 BroadcastMessage(msg.Content)),
+            MessageType.UpdateSubscription => EncryptionHelper.Encrypt(
+                AddSubscription(msg.ClientId, msg.Content)),
             _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
         };
     }
@@ -279,6 +281,24 @@ internal class MessagingService
         return new ResponseMessage<int>
         {
             Successs = true,
+            Content = 0,
+        };
+    }
+
+    private ResponseMessage<int> AddSubscription(
+        Guid clientId,
+        string? subscription)
+    {
+        if (string.IsNullOrWhiteSpace(subscription))
+        {
+            return ResponseMessage<int>.Empty;
+        }
+
+        bool response = _userService.AddSubscription(clientId, subscription);
+
+        return new ResponseMessage<int>
+        {
+            Successs = response,
             Content = 0,
         };
     }

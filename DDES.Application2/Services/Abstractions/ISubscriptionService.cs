@@ -8,4 +8,6 @@ public interface ISubscriptionService
     Task SubscribeAsync(CancellationToken cancellationToken = default);
 
     void AddRoleBasedSubscriptions();
+
+    void AddSubscription(string subscription);
 }

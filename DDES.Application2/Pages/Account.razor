@@ -7,7 +7,8 @@
             SellProduct="AccountPanelSellProductClicked"
             UpdateProduct="AccountPanelUpdateProductClicked"
             DeleteProduct="AccountPanelDeleteProductClicked"
-            BroadcastMessage="AccountPanelBroadcastMessage">
+            BroadcastMessage="AccountPanelBroadcastMessage"
+            SubscribeToMessage="AccountPanelSubscribe">
         </AccountPanel>
     </div>
     <div class="account-update-option">
@@ -61,6 +62,15 @@
                 <input type="text" @bind-value="_broadcastMessage"/>
             </div>
             <button @onclick="BroadcastMessage">Broadcast</button>
+        }
+        @if (_showSubscriptions)
+        {
+            <select @bind="_selectedSubscription">
+                <option>Customer Notifications</option>
+                <option>General Notifications</option>
+                <option>Personal Notifications</option>
+            </select>
+            <button @onclick="AddSubscription">Add Subscription</button>
         }
     </div>
 </div>
