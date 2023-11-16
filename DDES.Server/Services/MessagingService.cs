@@ -48,15 +48,23 @@ internal class MessagingService : IMessagingService
 
             _logger.LogInformation("Received Frame: {message}", message);
 
-            string response = ProcessMessage(message);
+            System.Threading.Thread processingThread =
+                new(() => ProcessMessageAndSendResponse(message));
 
-            _logger.LogInformation("Sending Frame: '{frame}'", response);
-
-            using RequestSocket responder = new();
-            responder.Connect($"tcp://127.0.0.1:{5556}");
-            responder.SendFrame(response);
-            responder.ReceiveFrameString();
+            processingThread.Start();
         }
+    }
+
+    private void ProcessMessageAndSendResponse(string message)
+    {
+        string response = ProcessMessage(message);
+
+        _logger.LogInformation("Sending Frame: '{frame}'", response);
+
+        using RequestSocket responder = new();
+        responder.Connect($"tcp://127.0.0.1:{5556}");
+        responder.SendFrame(response);
+        responder.ReceiveFrameString();
     }
 
     private string ProcessMessage(string message)
