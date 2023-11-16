@@ -1,0 +1,21 @@
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.top-row {
+  height: 5rem;
+  display: grid;
+  grid-template-columns: 2fr 6fr 2fr;
+  background-color: #7EF5AE;
+}
+
+.top-row > h1 {
+  margin: auto;
+  color: var(--theme-light-blue);
+}

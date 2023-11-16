@@ -1,42 +1,59 @@
-﻿using System.Buffers;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using DDES.Application.Services.Abstractions;
 using DDES.Common.Enums;
+using DDES.Common.Helpers;
 using DDES.Common.Models;
 using NetMQ;
 using NetMQ.Sockets;
 
 namespace DDES.Application.Services;
 
-internal sealed class MessagingService : IMessagingService
+public class MessagingService : IMessagingService
 {
-    public User? Authenticate(User user)
+    private readonly IClientService _clientService;
+
+    public MessagingService(IClientService clientService)
     {
-        string jsonUser = JsonSerializer.Serialize(user);
-
-        string response = SendMessage(jsonUser);
-
-        return string.IsNullOrEmpty(response)
-            ? null
-            : JsonSerializer.Deserialize<User?>(response);
+        _clientService = clientService;
     }
 
-    public string SendMessage(string data)
+    public ResponseMessage<TResponse> Send<TModel, TResponse>(
+        MessageType messageType,
+        TModel data)
     {
-        using RequestSocket requester = GetRequestSocket();
+        RequestMessage<string> message = new()
+        {
+            ClientId = _clientService.ClientId,
+            MessageType = messageType,
+            Content = JsonSerializer.Serialize(data),
+        };
 
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(data.Length + 3);
+        using RequestSocket requestSocket = new();
+        using ResponseSocket responseSocket = new();
 
-        int writtenBytes =
-            Encoding.UTF8.GetBytes(
-                $"{(int)MessageType.Authenticate}-{data}".AsSpan(), buffer);
+        requestSocket.Connect("tcp://127.0.0.1:5555");
 
-        requester.SendFrame(buffer[..writtenBytes]);
+        string encryptedMessage = EncryptionHelper.Encrypt(message);
 
-        ArrayPool<byte>.Shared.Return(buffer);
+        responseSocket.Bind($"tcp://*:{5556}");
+        //Send the request to the Server
+        requestSocket.SendFrame(encryptedMessage);
+        _ = requestSocket.ReceiveFrameString();
 
-        return requester.ReceiveFrameString();
+
+        //Receive response from the server and provide server with confirmation receipt
+        string responseString = responseSocket.ReceiveFrameString();
+
+        responseSocket.SendFrame("Message received by client");
+
+        // responseSocket.Unbind($"tcp://*:{5556}");
+
+        ResponseMessage<TResponse>? responseMessage =
+            EncryptionHelper
+                .Decrypt<ResponseMessage<TResponse>>(responseString);
+
+        return responseMessage ??
+               ResponseMessage<TResponse>.Empty;
     }
 
     private static RequestSocket GetRequestSocket()

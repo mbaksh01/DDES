@@ -1,10 +1,11 @@
-﻿using DDES.Common.Models;
+﻿using DDES.Common.Enums;
+using DDES.Common.Models;
 
 namespace DDES.Application.Services.Abstractions;
 
 public interface IMessagingService
 {
-    User? Authenticate(User user);
-
-    string SendMessage(string data);
+    ResponseMessage<TResponse> Send<TModel, TResponse>(
+        MessageType messageType,
+        TModel data);
 }
