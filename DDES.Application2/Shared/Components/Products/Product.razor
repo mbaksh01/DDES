@@ -5,6 +5,7 @@
     <div class="product-details">
         <p>Name: @Name</p>
         <p>Price: £@Price</p>
+        <p>Quantity: @Quantity</p>
         <p>Seller: @SellerName</p>
         <p>Description: @Description</p>
     </div>
@@ -17,6 +18,9 @@
 
     [Parameter]
     public float Price { get; set; }
+
+    [Parameter]
+    public float Quantity { get; set; }
 
     [Parameter]
     public string SellerName { get; set; } = "Seller Name";

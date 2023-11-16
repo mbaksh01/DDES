@@ -1,4 +1,4 @@
-﻿namespace DDES.Server.Services;
+﻿namespace DDES.Server.Services.Abstractions;
 
 internal interface IMessagingService
 {

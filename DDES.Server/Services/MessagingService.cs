@@ -13,18 +13,18 @@ internal class MessagingService : IMessagingService
 {
     private readonly ILogger<MessagingService> _logger;
     private readonly IUserService _userService;
-    private readonly UserMessagingService _userMessaging;
+    private readonly IUserMessagingService _userMessaging;
     private readonly IClientService _clientService;
     private readonly IProductService _productService;
-    private readonly PublishingService _publishingService;
+    private readonly IPublishingService _publishingService;
 
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
         IClientService clientService,
-        UserMessagingService userMessaging,
+        IUserMessagingService userMessaging,
         IProductService productService,
-        PublishingService publishingService)
+        IPublishingService publishingService)
     {
         _logger = logger;
         _userService = userService;

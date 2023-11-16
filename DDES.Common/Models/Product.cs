@@ -10,6 +10,8 @@ public class Product
 
     public float Price { get; set; }
 
+    public float Quantity { get; set; }
+
     [JsonPropertyName("sellerUsername")]
     public string Seller { get; set; } = string.Empty;
 

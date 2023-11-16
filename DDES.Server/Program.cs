@@ -11,8 +11,8 @@ builder.ConfigureServices(services =>
     _ = services.AddSingleton<IClientService, ClientService>();
     _ = services.AddSingleton<IUserService, UserService>();
     _ = services.AddSingleton<IMessagingService, MessagingService>();
-    _ = services.AddSingleton<PublishingService>();
-    _ = services.AddSingleton<UserMessagingService>();
+    _ = services.AddSingleton<IPublishingService, PublishingService>();
+    _ = services.AddSingleton<IUserMessagingService, UserMessagingService>();
     _ = services.AddSingleton<IProductService, ProductService>();
 });
 
