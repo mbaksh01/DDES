@@ -10,7 +10,7 @@ builder.ConfigureServices(services =>
 {
     _ = services.AddSingleton<IClientService, ClientService>();
     _ = services.AddSingleton<IUserService, UserService>();
-    _ = services.AddSingleton<MessagingService>();
+    _ = services.AddSingleton<IMessagingService, MessagingService>();
     _ = services.AddSingleton<PublishingService>();
     _ = services.AddSingleton<UserMessagingService>();
     _ = services.AddSingleton<IProductService, ProductService>();
@@ -18,8 +18,8 @@ builder.ConfigureServices(services =>
 
 IHost app = builder.Build();
 
-PublishingService publishingService =
-    app.Services.GetRequiredService<PublishingService>();
+IPublishingService publishingService =
+    app.Services.GetRequiredService<IPublishingService>();
 
 Thread notifications =
     new(() =>
@@ -33,8 +33,8 @@ Thread notifications =
     });
 // notifications.Start();
 
-MessagingService messagingService =
-    app.Services.GetRequiredService<MessagingService>();
+IMessagingService messagingService =
+    app.Services.GetRequiredService<IMessagingService>();
 
 app.Start();
 

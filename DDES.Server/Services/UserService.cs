@@ -34,14 +34,6 @@ internal class UserService : IUserService
                  new List<User>();
     }
 
-    private async Task SaveUsers()
-    {
-        await using StreamWriter sw = new("Data/credentials.json",
-            append: false);
-
-        sw.WriteLine(JsonSerializer.Serialize(_users));
-    }
-
     public User? Authenticate(string username, string password)
     {
         LoadUsers();

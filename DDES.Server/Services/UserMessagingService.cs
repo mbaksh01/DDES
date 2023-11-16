@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
 using DDES.Common.Models;
+using DDES.Server.Services.Abstractions;
 using Thread = DDES.Common.Models.Thread;
 
 namespace DDES.Server.Services;
 
-public class UserMessagingService
+public class UserMessagingService : IUserMessagingService
 {
     private Threads _threads = new();
 

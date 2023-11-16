@@ -1,10 +1,11 @@
 ﻿using DDES.Common.Helpers;
+using DDES.Server.Services.Abstractions;
 using NetMQ;
 using NetMQ.Sockets;
 
 namespace DDES.Server.Services;
 
-public class PublishingService : IDisposable
+public class PublishingService : IPublishingService
 {
     private readonly PublisherSocket _publisher;
     private const int PublishPort = 5554;

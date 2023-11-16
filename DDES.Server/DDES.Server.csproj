@@ -34,4 +34,9 @@
     <ProjectReference Include="..\DDES.Common\DDES.Common.csproj"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="DDES.Server.Tests.Unit"/>
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+  </ItemGroup>
+
 </Project>

@@ -9,7 +9,7 @@ using Thread = DDES.Common.Models.Thread;
 
 namespace DDES.Server.Services;
 
-internal class MessagingService
+internal class MessagingService : IMessagingService
 {
     private readonly ILogger<MessagingService> _logger;
     private readonly IUserService _userService;
