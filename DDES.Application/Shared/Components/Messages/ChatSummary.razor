@@ -4,12 +4,22 @@
     </div>
     <div class="chat-summary-details-container">
         <div class="chat-summary-details">
-            <p>Seller Name</p>
+            <p>@ToName</p>
             <div class="chat-summary-last-sent-message">
-                <p>Last message preview</p>
-                <span class="pi-circle"></span>
-                <p>Time sent</p>
+                <p>@LastMessagePreview</p>
+                @* <span class="pi-circle"></span> *@
+                @* <p>Time sent</p> *@
             </div>
         </div>
     </div>
 </div>
+
+@code {
+
+    [Parameter]
+    public string ToName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LastMessagePreview { get; set; } = string.Empty;
+
+}

@@ -8,14 +8,16 @@
         <div class="chats">
             @foreach (var thread in _threads)
             {
-                <ChatSummary></ChatSummary>
+                <ChatSummary
+                    ToName="@(thread.CustomerUsername == _currentUsername ? thread.SupplierUsername : thread.CustomerUsername)"
+                    LastMessagePreview="@(thread.Messages.Last().MessageText)"/>
             }
         </div>
     </div>
     <div class="chat">
         @if (_currentThread is not null)
         {
-            <h4>@_currentThread.SupplierUsername</h4>
+            <h4>@(_currentThread.CustomerUsername == _currentUsername ? _currentThread.SupplierUsername : _currentThread.CustomerUsername)</h4>
             <hr/>
             <div class="chat-messages">
                 <div class="chat-history">

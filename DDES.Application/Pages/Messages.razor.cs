@@ -15,6 +15,8 @@ public partial class Messages : ComponentBase
 
     private string _currentRole = string.Empty;
 
+    private string _currentUsername = string.Empty;
+
     private string _message = string.Empty;
 
     [Inject]
@@ -43,6 +45,8 @@ public partial class Messages : ComponentBase
 
         _currentRole =
             AuthenticationService.User?.Roles.First() ?? string.Empty;
+
+        _currentUsername = AuthenticationService.User?.Username ?? string.Empty;
     }
 
     private void SendOnEnter(KeyboardEventArgs args)
