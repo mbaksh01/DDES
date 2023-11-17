@@ -34,6 +34,7 @@
   {
     "id": "a22be76d-a601-48b0-b1e8-554daa232dda",
     "name": "Corsair RM850x 80 PLUS Gold Fully Modular ATX 850 Watt Power Supply",
+    "price": 80,
     "quantity": 132,
     "description": "Computer PSU designed for gaming.",
     "sellerUsername": "supplier"
@@ -41,6 +42,7 @@
   {
     "id": "1632fb34-5ca0-43fb-ab4b-203f43a93d07",
     "name": "MSI MAG FORGE 112R Mid-Tower PC Case",
+    "price": 40,
     "quantity": 261,
     "description": "Computer case designed for gaming.",
     "sellerUsername": "supplier"
@@ -48,6 +50,7 @@
   {
     "id": "18642523-b108-4e0a-83b4-30cbbf47b910",
     "name": "CRUA 27 Inch 180HZ Curved Gaming Monitor",
+    "price": 105,
     "quantity": 72,
     "description": "Monitor designed for gaming.",
     "sellerUsername": "supplier"
