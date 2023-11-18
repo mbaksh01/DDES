@@ -17,6 +17,7 @@ internal class MessagingService : IMessagingService
     private readonly IClientService _clientService;
     private readonly IProductService _productService;
     private readonly IPublishingService _publishingService;
+    private readonly CancellationTokenSource _cts = new();
 
     public MessagingService(
         ILogger<MessagingService> logger,
@@ -39,10 +40,11 @@ internal class MessagingService : IMessagingService
         using ResponseSocket receiver = new();
         receiver.Bind($"tcp://*:{port}");
 
-        while (true)
+        while (_cts.IsCancellationRequested == false)
         {
             _logger.LogInformation("Service listening on port: {port}.",
                 port);
+
             string message = receiver.ReceiveFrameString();
             receiver.SendFrameEmpty();
 
@@ -53,6 +55,11 @@ internal class MessagingService : IMessagingService
 
             processingThread.Start();
         }
+    }
+
+    public void Stop()
+    {
+        _cts.Cancel();
     }
 
     private void ProcessMessageAndSendResponse(string message)

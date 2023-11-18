@@ -1,4 +1,5 @@
-﻿using DDES.Server.Services;
+﻿using DDES.Server.Hosting;
+using DDES.Server.Services;
 using DDES.Server.Services.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,8 @@ builder.ConfigureServices(services =>
     _ = services.AddSingleton<IPublishingService, PublishingService>();
     _ = services.AddSingleton<IUserMessagingService, UserMessagingService>();
     _ = services.AddSingleton<IProductService, ProductService>();
+
+    _ = services.AddHostedService<InitializationService>();
 });
 
 IHost app = builder.Build();
@@ -32,9 +35,4 @@ Thread notifications =
     });
 // notifications.Start();
 
-IMessagingService messagingService =
-    app.Services.GetRequiredService<IMessagingService>();
-
-app.Start();
-
-messagingService.Listen();
+app.Run();

@@ -3,4 +3,6 @@
 internal interface IMessagingService
 {
     void Listen(int port = 5555);
+
+    void Stop();
 }
