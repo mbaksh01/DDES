@@ -10,10 +10,14 @@ public class UserMessagingService : IUserMessagingService
 {
     private Threads _threads = new();
     private readonly IPublishingService _publishingService;
+    private readonly ILogger<UserMessagingService> _logger;
 
-    public UserMessagingService(IPublishingService publishingService)
+    public UserMessagingService(
+        IPublishingService publishingService,
+        ILogger<UserMessagingService> logger)
     {
         _publishingService = publishingService;
+        _logger = logger;
         LoadThreads();
     }
 
@@ -30,6 +34,10 @@ public class UserMessagingService : IUserMessagingService
 
         _threads = JsonSerializer.Deserialize<Threads>(threads) ??
                    new Threads();
+
+        _logger.LogInformation(
+            "Successfully loaded all threads. Thread count: {ThreadCount}",
+            _threads.ThreadList.Count);
     }
 
     public IEnumerable<Thread> GetThreads(string username)
@@ -57,6 +65,8 @@ public class UserMessagingService : IUserMessagingService
                     StringComparison.OrdinalIgnoreCase));
 
         thread?.Messages.Add(message);
+
+        _logger.LogInformation("Successfully added thread message.");
 
         _publishingService.PublishMessage(Topics.NewDirectMessage, message);
     }

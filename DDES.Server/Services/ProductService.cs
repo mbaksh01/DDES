@@ -40,6 +40,10 @@ public class ProductService : IProductService
     public void AddProduct(Product product)
     {
         _products.Add(product);
+
+        _logger.LogInformation(
+            "Successfully added product. ProductId: {ProductId}",
+            product.Id);
     }
 
     public void UpdateProduct(Product product)
@@ -55,6 +59,10 @@ public class ProductService : IProductService
 
         _products.Remove(existingProduct);
         _products.Add(product);
+
+        _logger.LogInformation(
+            "Successfully updated product. ProductId: {ProductId}",
+            product.Id);
     }
 
     public void DeleteProduct(Product product)
@@ -69,6 +77,10 @@ public class ProductService : IProductService
         }
 
         _products.Remove(existingProduct);
+
+        _logger.LogInformation(
+            "Successfully deleted product. ProductId: {ProductId}",
+            product.Id);
     }
 
     public List<Product> GetAllProducts()

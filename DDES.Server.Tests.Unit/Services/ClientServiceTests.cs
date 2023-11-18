@@ -1,10 +1,19 @@
 ﻿using DDES.Server.Services.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace DDES.Server.Tests.Unit.Services;
 
 public class ClientServiceTests
 {
-    private readonly IClientService _sut = new ClientService();
+    private readonly ILogger<ClientService> _logger =
+        Substitute.For<ILogger<ClientService>>();
+
+    private readonly IClientService _sut;
+
+    public ClientServiceTests()
+    {
+        _sut = _sut = new ClientService(_logger);
+    }
 
     [Fact]
     public void Get_Username_Should_Return_Correct_Username()

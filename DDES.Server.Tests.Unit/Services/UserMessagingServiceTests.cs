@@ -1,5 +1,6 @@
 ﻿using DDES.Common.Enums;
 using DDES.Server.Services.Abstractions;
+using Microsoft.Extensions.Logging;
 using Thread = DDES.Common.Models.Thread;
 
 namespace DDES.Server.Tests.Unit.Services;
@@ -9,11 +10,14 @@ public class UserMessagingServiceTests
     private readonly IPublishingService _publishingService =
         Substitute.For<IPublishingService>();
 
+    private readonly ILogger<UserMessagingService> _logger =
+        Substitute.For<ILogger<UserMessagingService>>();
+
     private readonly IUserMessagingService _sut;
 
     public UserMessagingServiceTests()
     {
-        _sut = new UserMessagingService(_publishingService);
+        _sut = new UserMessagingService(_publishingService, _logger);
     }
 
     [Fact]

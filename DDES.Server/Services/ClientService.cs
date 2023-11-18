@@ -5,11 +5,23 @@ namespace DDES.Server.Services;
 
 internal sealed class ClientService : IClientService
 {
+    private readonly ILogger<ClientService> _logger;
     private readonly List<Client> _clients = new();
+
+    public ClientService(ILogger<ClientService> logger)
+    {
+        _logger = logger;
+    }
 
     public void AddClient(Client client)
     {
         _clients.Add(client);
+
+        _logger.LogInformation(
+            "Added client. ClientId {ClientId}, Username: {Username}, Port: {Port}.",
+            client.Id,
+            client.Username,
+            client.Port);
     }
 
     public string? GetUsername(Guid clientId)
@@ -28,5 +40,10 @@ internal sealed class ClientService : IClientService
 
         _clients.Remove(client);
         _clients.Add(client with { Username = username });
+
+        _logger.LogInformation(
+            "Successfully updated client with new username. ClientId: {ClientId}, Username: {Username}",
+            clientId,
+            username);
     }
 }

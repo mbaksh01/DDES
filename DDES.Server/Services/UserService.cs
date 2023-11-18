@@ -32,6 +32,9 @@ internal class UserService : IUserService
 
         _users = JsonSerializer.Deserialize<List<User>>(users) ??
                  new List<User>();
+
+        _logger.LogInformation("Loaded all users. User count: {UserCount}.",
+            _users.Count);
     }
 
     public User? Authenticate(string username, string password)
