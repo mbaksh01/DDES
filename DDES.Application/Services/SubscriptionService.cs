@@ -39,6 +39,7 @@ public sealed class SubscriptionService : ISubscriptionService, IDisposable
     {
         _subscriber.Subscribe(Topics.PersonalNotification);
         _subscriber.Subscribe(Topics.GeneralNotification);
+        _subscriber.Subscribe(Topics.NewDirectMessage);
         _subscriber.Subscribe("test");
 
         if (_authenticationService.User?.Roles.Contains("customer") ?? false)

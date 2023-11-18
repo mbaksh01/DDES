@@ -1,5 +1,4 @@
-﻿using DDES.Common.Enums;
-using DDES.Server.Services;
+﻿using DDES.Server.Services;
 using DDES.Server.Services.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +25,7 @@ Thread notifications =
     {
         while (true)
         {
-            publishingService.PublishMessage(Topics.CustomerNotification,
+            publishingService.PublishMessage("test",
                 "Hello World");
             Thread.Sleep(1000);
         }

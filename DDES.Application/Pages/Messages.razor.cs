@@ -1,4 +1,5 @@
-﻿using DDES.Application.Services.Abstractions;
+﻿using System.Text.Json;
+using DDES.Application.Services.Abstractions;
 using DDES.Common.Enums;
 using DDES.Common.Models;
 using Microsoft.AspNetCore.Components;
@@ -29,6 +30,9 @@ public partial class Messages : ComponentBase
     [Inject]
     private IUserMessagingService UserMessagingService { get; set; } = default!;
 
+    [Inject]
+    private ISubscriptionService SubscriptionService { get; set; } = default!;
+
     protected override void OnInitialized()
     {
         ResponseMessage<Threads> response =
@@ -47,6 +51,21 @@ public partial class Messages : ComponentBase
             AuthenticationService.User?.Roles.First() ?? string.Empty;
 
         _currentUsername = AuthenticationService.User?.Username ?? string.Empty;
+
+        SubscriptionService.MessageReceivedAsync += (topic, message) =>
+        {
+            if (topic != Topics.NewDirectMessage)
+            {
+                return Task.CompletedTask;
+            }
+
+            ThreadMessage threadMessage =
+                JsonSerializer.Deserialize<ThreadMessage>(message!)!;
+
+            _currentThread?.Messages.Add(threadMessage);
+
+            return InvokeAsync(StateHasChanged);
+        };
     }
 
     private void SendOnEnter(KeyboardEventArgs args)

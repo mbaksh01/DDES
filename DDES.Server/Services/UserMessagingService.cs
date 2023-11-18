@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using DDES.Common.Enums;
 using DDES.Common.Models;
 using DDES.Server.Services.Abstractions;
 using Thread = DDES.Common.Models.Thread;
@@ -8,9 +9,11 @@ namespace DDES.Server.Services;
 public class UserMessagingService : IUserMessagingService
 {
     private Threads _threads = new();
+    private readonly IPublishingService _publishingService;
 
-    public UserMessagingService()
+    public UserMessagingService(IPublishingService publishingService)
     {
+        _publishingService = publishingService;
         LoadThreads();
     }
 
@@ -54,5 +57,7 @@ public class UserMessagingService : IUserMessagingService
                     StringComparison.OrdinalIgnoreCase));
 
         thread?.Messages.Add(message);
+
+        _publishingService.PublishMessage(Topics.NewDirectMessage, message);
     }
 }

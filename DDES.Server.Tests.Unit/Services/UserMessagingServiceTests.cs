@@ -1,11 +1,20 @@
-﻿using DDES.Server.Services.Abstractions;
+﻿using DDES.Common.Enums;
+using DDES.Server.Services.Abstractions;
 using Thread = DDES.Common.Models.Thread;
 
 namespace DDES.Server.Tests.Unit.Services;
 
 public class UserMessagingServiceTests
 {
-    private readonly IUserMessagingService _sut = new UserMessagingService();
+    private readonly IPublishingService _publishingService =
+        Substitute.For<IPublishingService>();
+
+    private readonly IUserMessagingService _sut;
+
+    public UserMessagingServiceTests()
+    {
+        _sut = new UserMessagingService(_publishingService);
+    }
 
     [Fact]
     private void Threads_Should_Be_Loaded_On_Construction()
@@ -37,5 +46,9 @@ public class UserMessagingServiceTests
 
         threads.First(t => t.CustomerUsername == "customer").Messages
             .Should().Contain(message);
+
+        _publishingService
+            .Received(1)
+            .PublishMessage(Topics.NewDirectMessage, message);
     }
 }

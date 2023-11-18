@@ -40,7 +40,6 @@ public class MessagingService : IMessagingService
         requestSocket.SendFrame(encryptedMessage);
         _ = requestSocket.ReceiveFrameString();
 
-
         //Receive response from the server and provide server with confirmation receipt
         string responseString = responseSocket.ReceiveFrameString();
 
