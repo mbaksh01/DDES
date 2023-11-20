@@ -23,7 +23,7 @@ public partial class Main : ComponentBase
                 MessageType.ClientConnected, new ClientConnectedRequest
                 {
                     Username = "",
-                    Port = 5556,
+                    Port = MessagingService.Port,
                 });
 
         if (response.Successs)

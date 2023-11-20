@@ -19,6 +19,8 @@ internal class MessagingService : IMessagingService
     private readonly IPublishingService _publishingService;
     private readonly CancellationTokenSource _cts = new();
 
+    private Guid _lastAddedClientId;
+
     public MessagingService(
         ILogger<MessagingService> logger,
         IUserService userService,
@@ -64,52 +66,54 @@ internal class MessagingService : IMessagingService
 
     private void ProcessMessageAndSendResponse(string message)
     {
-        string response = ProcessMessage(message);
-
+        RequestMessage<string>? msg =
+            EncryptionHelper.Decrypt<RequestMessage<string>>(message);
+        
+        string response = ProcessMessage(msg);
+        
         _logger.LogInformation("Sending Frame: '{frame}'", response);
 
+        int port = _clientService.GetPort(_lastAddedClientId);
+        
         using RequestSocket responder = new();
-        responder.Connect($"tcp://127.0.0.1:{5556}");
+        responder.Connect($"tcp://127.0.0.1:{port}");
         responder.SendFrame(response);
         responder.ReceiveFrameString();
     }
 
-    private string ProcessMessage(string message)
+    private string ProcessMessage(RequestMessage<string>? message)
     {
-        RequestMessage<string>? msg =
-            EncryptionHelper.Decrypt<RequestMessage<string>>(message);
-
-        if (msg is null)
+        if (message is null)
         {
             return string.Empty;
         }
 
         _logger.LogInformation(
             "Processing message. Message Type: {messageType}, Content: {content}.",
-            msg.MessageType,
-            msg.Content);
+            message.MessageType,
+            message.Content);
 
-        return msg.MessageType switch
+        return message.MessageType switch
         {
             MessageType.Authenticate => EncryptionHelper.Encrypt(
-                Authenticate(msg.ClientId, msg.Content)),
+                Authenticate(message.ClientId, message.Content)),
             MessageType.GetThreads => EncryptionHelper.Encrypt(
-                GetThreads(msg.ClientId)),
+                GetThreads(message.ClientId)),
             MessageType.ClientConnected => EncryptionHelper.Encrypt(
-                ClientConnected(msg.Content)),
+                ClientConnected(message.Content)),
             MessageType.SendThreadMessage => EncryptionHelper.Encrypt(
-                ReceiveThreadMessage(msg.Content)),
+                ReceiveThreadMessage(message.Content)),
             MessageType.GetProducts => EncryptionHelper.Encrypt(GetProducts()),
             MessageType.AddProduct => EncryptionHelper.Encrypt(
-                AddProduct(msg.Content)),
+                AddProduct(message.Content)),
             MessageType.UpdateProduct => EncryptionHelper.Encrypt(
-                UpdateProduct(msg.Content)),
+                UpdateProduct(message.Content)),
             MessageType.DeleteProduct => EncryptionHelper.Encrypt(
-                DeleteProduct(msg.Content)),
+                DeleteProduct(message.Content)),
             MessageType.BroadcastMessage => EncryptionHelper.Encrypt(
-                BroadcastMessage(msg.Content)),
+                BroadcastMessage(message.Content)),
             MessageType.UpdateSubscription => EncryptionHelper.Encrypt(
-                AddSubscription(msg.ClientId, msg.Content)),
+                AddSubscription(message.ClientId, message.Content)),
             _ => EncryptionHelper.Encrypt(ResponseMessage<string>.Empty),
         };
     }
@@ -207,6 +211,8 @@ internal class MessagingService : IMessagingService
 
         _clientService.AddClient(client);
 
+        _lastAddedClientId = client.Id;
+        
         _logger.LogInformation("Successfully registered client.");
 
         return new ResponseMessage<ClientConnectedResponse>

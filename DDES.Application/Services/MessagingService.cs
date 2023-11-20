@@ -11,10 +11,13 @@ namespace DDES.Application.Services;
 public class MessagingService : IMessagingService
 {
     private readonly IClientService _clientService;
+    
+    public int Port { get; }
 
     public MessagingService(IClientService clientService)
     {
         _clientService = clientService;
+        Port = GetRandomPort();
     }
 
     public ResponseMessage<TResponse> Send<TModel, TResponse>(
@@ -35,7 +38,7 @@ public class MessagingService : IMessagingService
 
         string encryptedMessage = EncryptionHelper.Encrypt(message);
 
-        responseSocket.Bind($"tcp://*:{5556}");
+        responseSocket.Bind($"tcp://*:{Port}");
         //Send the request to the Server
         requestSocket.SendFrame(encryptedMessage);
         _ = requestSocket.ReceiveFrameString();
@@ -55,12 +58,8 @@ public class MessagingService : IMessagingService
                ResponseMessage<TResponse>.Empty;
     }
 
-    private static RequestSocket GetRequestSocket()
+    private static int GetRandomPort()
     {
-        RequestSocket requester = new();
-
-        requester.Connect("tcp://localhost:5555");
-
-        return requester;
+        return Random.Shared.Next(10_000, 60_000);
     }
 }

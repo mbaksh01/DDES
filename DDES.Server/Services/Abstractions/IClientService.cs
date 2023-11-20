@@ -9,4 +9,6 @@ internal interface IClientService
     string? GetUsername(Guid clientId);
 
     void AppendUsername(Guid clientId, string username);
+    
+    int GetPort(Guid clientId);
 }

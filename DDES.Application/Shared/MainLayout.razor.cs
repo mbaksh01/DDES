@@ -19,17 +19,17 @@ public partial class MainLayout : LayoutComponentBase
 
     protected override void OnInitialized()
     {
-        SubscriptionService.MessageReceivedAsync += async (topic, message) =>
-        {
-            _notification = new Notification(topic, message);
-            await InvokeAsync(StateHasChanged);
-            await Task.Delay(5000);
-            _notification = null;
-        };
-
         AuthenticationService.UserAuthenticated += _ =>
         {
             SubscriptionService.AddRoleBasedSubscriptions();
+            
+            SubscriptionService.MessageReceivedAsync += async (topic, message) =>
+            {
+                _notification = new Notification(topic, message);
+                await InvokeAsync(StateHasChanged);
+                await Task.Delay(5000);
+                _notification = null;
+            };
         };
 
         if (AuthenticationService.IsAuthenticated == false)

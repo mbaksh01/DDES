@@ -11,11 +11,11 @@ main {
 .top-row {
   height: 5rem;
   display: grid;
-  grid-template-columns: 2fr 6fr 2fr;
+  grid-template-columns: 2fr 3fr 2fr;
   background-color: #7EF5AE;
 }
 
 .top-row > h1 {
-  margin: auto;
+  margin: auto 1rem;
   color: var(--theme-light-blue);
 }

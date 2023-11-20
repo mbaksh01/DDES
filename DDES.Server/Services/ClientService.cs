@@ -46,4 +46,17 @@ internal sealed class ClientService : IClientService
             clientId,
             username);
     }
+
+    public int GetPort(Guid clientId)
+    {
+        Client? client = _clients.Find(c => c.Id == clientId);
+
+        if (client is null)
+        {
+            throw new Exception(
+                $"Could not find the client with id: {clientId}");
+        }
+
+        return client.Port;
+    }
 }
